@@ -1,6 +1,7 @@
 package kg.hackaton.project.controllers;
 
 import kg.hackaton.project.entities.User;
+import kg.hackaton.project.services.AppartmentService;
 import kg.hackaton.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -9,11 +10,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MainController {
+
+    @Autowired
+    private AppartmentService appartmentService;
 
     @Autowired
     private UserService userService;
@@ -26,7 +31,17 @@ public class MainController {
         if (currentUser != null) {
             setUserCredentials(model);
         }
+        model.addAttribute("appartments", appartmentService.findAll());
         return "index";
+    }
+    @GetMapping("/appartment/info/{id}")
+    public String getAppartmentInfo(@PathVariable("id") Long id, Model model) {
+        getCurrentUser();
+        if (currentUser != null) {
+            setUserCredentials(model);
+        }
+        model.addAttribute("appartment", appartmentService.getById(id));
+        return "appartment_info";
     }
 
     @GetMapping("/success")

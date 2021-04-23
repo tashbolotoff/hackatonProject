@@ -24,7 +24,6 @@ public class ImgServiceImpl implements ImgPathService {
     public ImgPath create(ImgPathModel imgPathModel) {
         ImgPath imgPath = ImgPath.builder()
                 .path(imgPathModel.getPath() != null ? imgPathModel.getPath() : null)
-                .appartment(appartmentRepo.getOne(imgPathModel.getAppartmentId()))
                 .build();
         return imgPathRepo.save(imgPath);
     }
@@ -34,9 +33,6 @@ public class ImgServiceImpl implements ImgPathService {
         return imgPathRepo.findById(imgPathModel.getImgPathId())
                 .map(newImgPath -> {
                     newImgPath.setPath(imgPathModel.getPath());
-                    if (imgPathModel.getAppartmentId() != null) {
-                        newImgPath.setAppartment(appartmentRepo.getOne(imgPathModel.getAppartmentId()));
-                    }
                     return imgPathRepo.save(newImgPath);
                 }).orElseThrow(() ->
                         new RecordNotFoundException("Record not found with id:"+imgPathModel.getImgPathId()));

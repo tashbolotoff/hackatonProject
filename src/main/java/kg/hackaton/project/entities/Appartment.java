@@ -71,6 +71,10 @@ public class Appartment extends Audit<String>{
     @Column(name = "longitude")
     Double longitude;
 
-//    @OneToMany(mappedBy = "imgPath", cascade = CascadeType.ALL, orphanRemoval = true)
-//    List<ImgPath> imgPathList;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "imgPaths",
+            joinColumns = @JoinColumn(name = "appartment_id"),
+            inverseJoinColumns = @JoinColumn(name = "img_path_id"))
+    List<ImgPath> imgPaths ;
+
 }

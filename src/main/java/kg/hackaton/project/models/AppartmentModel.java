@@ -6,9 +6,11 @@ import kg.hackaton.project.enums.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,5 +47,5 @@ public class AppartmentModel {
 
     Double longitude;
 
-
+    List<MultipartFile> imgPaths;
 }

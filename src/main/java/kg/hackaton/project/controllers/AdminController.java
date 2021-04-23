@@ -11,7 +11,6 @@ import kg.hackaton.project.models.ManufacturerModel;
 import kg.hackaton.project.models.SerieModel;
 import kg.hackaton.project.entities.Permission;
 import kg.hackaton.project.entities.PermissionCategory;
-import kg.hackaton.project.entities.User;
 import kg.hackaton.project.models.*;
 import kg.hackaton.project.repositories.PermissionCategoryRepo;
 import kg.hackaton.project.services.*;
@@ -187,6 +186,15 @@ public class AdminController {
         model.addAttribute("appartments", appartmentService.findAll());
         setUserCredentials(model);
         return "appartments/appartment_list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('APPARTMENT_READ', 'SUPER_ADMIN')")
+    @GetMapping("/appartment/listImg")
+    public String getAppartmentListWithImg(Model model) {
+        model.addAttribute("title", "Список недвижимости");
+        model.addAttribute("appartments", appartmentService.findAll());
+        setUserCredentials(model);
+        return "index";
     }
 
     @PreAuthorize("isAuthenticated() and hasPermission('APPARTMENT_UPDATE', 'SUPER_ADMIN')")

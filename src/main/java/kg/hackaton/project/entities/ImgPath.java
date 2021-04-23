@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,7 +23,8 @@ public class ImgPath extends Audit<String> {
     @Column(name = "path", columnDefinition = "TEXT")
     String path;
 
-    @ManyToOne
-    @JoinColumn(name = "appartment_id")
-    Appartment appartment;
+    @ManyToMany(mappedBy = "imgPaths", fetch = FetchType.EAGER)
+    List<Appartment> appartments;
+
+
 }

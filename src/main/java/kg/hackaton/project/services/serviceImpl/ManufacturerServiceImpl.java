@@ -42,4 +42,9 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         manufacturerRepo.deleteById(id);
         return "Manufacturer with id "+ id + " has been deleted";
     }
+
+    @Override
+    public Manufacturer getById(Long id) {
+        return manufacturerRepo.getOne(id);
+    }
 }

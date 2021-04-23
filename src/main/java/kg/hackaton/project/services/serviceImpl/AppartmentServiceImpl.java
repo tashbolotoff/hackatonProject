@@ -81,4 +81,9 @@ public class AppartmentServiceImpl implements AppartmentService {
         appartmentRepo.deleteById(id);
         return "Appartment with id "+ id + " has been deleted";
     }
+
+    @Override
+    public Appartment getById(Long id) {
+        return appartmentRepo.getOne(id);
+    }
 }

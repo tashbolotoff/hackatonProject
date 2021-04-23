@@ -1,7 +1,7 @@
 package kg.hackaton.project.controllers;
 
 import kg.hackaton.project.entities.User;
-import kg.hackaton.project.entities.User;
+import kg.hackaton.project.models.AppartmentModel;
 import kg.hackaton.project.models.ClientModel;
 import kg.hackaton.project.models.ManufacturerModel;
 import kg.hackaton.project.models.SerieModel;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -63,7 +62,7 @@ public class AdminController {
 
     @PreAuthorize("isAuthenticated() and hasPermission('USER_CREATE', 'SUPER_ADMIN')")
     @GetMapping("/user/add")
-    public String getUserAddForm(Model model){
+    public String getUserAddForm(Model model) {
         model.addAttribute("title", "Добавление нового пользователя");
         model.addAttribute("roles", userRoleService.getAllUserRoles());
         return "users/user_form";
@@ -78,7 +77,7 @@ public class AdminController {
 
     @PreAuthorize("isAuthenticated() and hasPermission('USER_READ', 'SUPER_ADMIN')")
     @GetMapping("/user/{id}")
-    public String getUserEditForm(@PathVariable("id") Long userId, Model model){
+    public String getUserEditForm(@PathVariable("id") Long userId, Model model) {
         User user = userService.getById(userId);
         model.addAttribute("title", "Редактирование пользователя");
         model.addAttribute("roles", userRoleService.getAllUserRoles());
@@ -104,7 +103,7 @@ public class AdminController {
     //RAYON
     @PreAuthorize("isAuthenticated() and hasPermission('RAYON_READ', 'SUPER_ADMIN')")
     @GetMapping("/rayon/list")
-    public String getrayonList(Model model){
+    public String getrayonList(Model model) {
         model.addAttribute("title", "Список районов");
         model.addAttribute("rayons", rayonService.findAll());
         return "rayons/rayon_list";
@@ -113,23 +112,24 @@ public class AdminController {
     //MANUFACTURER
     @PreAuthorize("isAuthenticated() and hasPermission('MANUFACTURER_READ', 'SUPER_ADMIN')")
     @GetMapping("/manufacturer/list")
-    public String getManufacturerList(Model model){
+    public String getManufacturerList(Model model) {
         setUserCredentials(model);
         model.addAttribute("title", "Список жилых комплексов");
         model.addAttribute("manufacturers", manufacturerService.findAll());
         return "manufacturers/manufacturer_list";
     }
 
-    @PreAuthorize("isAuthenticated() and hasPermission('MANUFACTURERUPDATE', 'SUPER_ADMIN')")
+    @PreAuthorize("isAuthenticated() and hasPermission('MANUFACTURER_UPDATE', 'SUPER_ADMIN')")
     @GetMapping("/manufacturer/edit/{id}")
-    public String getManufacturerEditForm(@PathVariable("id") Long id, Model model){
+    public String getManufacturerEditForm(@PathVariable("id") Long id, Model model) {
         setUserCredentials(model);
         model.addAttribute("title", "Изменение жилого комплекса");
+        model.addAttribute("manufacturer", manufacturerService.getById(id));
         return "manufacturers/add_or_update_form";
     }
 
     @PreAuthorize("isAuthenticated() and hasPermission('MANUFACTURER_UPDATE', 'SUPER_ADMIN')")
-    @PostMapping("/manufacturer/edit")
+    @PostMapping("/manufacturer/update")
     public String setManufacturer(@Validated @ModelAttribute("manufacturer") ManufacturerModel manufacturerModel) {
         manufacturerService.update(manufacturerModel);
         return "redirect:/admin/manufacturer/list";
@@ -145,8 +145,49 @@ public class AdminController {
 
     @PreAuthorize("isAuthenticated() and hasPermission('MANUFACTURER_CREATE', 'SUPER_ADMIN')")
     @PostMapping("/manufacturer/add")
-    public String createManufacturer(@Validated @ModelAttribute("rayon") ManufacturerModel manufacturerModel) {
+    public String createManufacturer(@Validated @ModelAttribute("manufacturer") ManufacturerModel manufacturerModel) {
         manufacturerService.create(manufacturerModel);
+        return "redirect:/admin/manufacturer/list";
+    }
+
+    //APPARTMENT
+    @PreAuthorize("isAuthenticated() and hasPermission('APPARTMENT_READ', 'SUPER_ADMIN')")
+    @GetMapping("/appartment/list")
+    public String getAppartmentList(Model model) {
+        setUserCredentials(model);
+        model.addAttribute("title", "Список недвижимости");
+        model.addAttribute("appartments", appartmentService.findAll());
+        return "appartments/appartment_list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('APPARTMENT_UPDATE', 'SUPER_ADMIN')")
+    @GetMapping("/appartment/edit/{id}")
+    public String getAppartmentEditForm(@PathVariable("id") Long id, Model model) {
+        setUserCredentials(model);
+        model.addAttribute("title", "Изменение недвижимости");
+        model.addAttribute("appartment", appartmentService.getById(id));
+        return "appartments/add_or_update_form";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('APPARTMENT_UPDATE', 'SUPER_ADMIN')")
+    @PostMapping("/appartment/update")
+    public String setAppartment(@Validated @ModelAttribute("appartment") AppartmentModel appartmentModel) {
+        appartmentService.update(appartmentModel);
+        return "redirect:/admin/manufacturer/list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('APPARTMENT_CREATE', 'SUPER_ADMIN')")
+    @GetMapping("/appartment/add")
+    public String addNewAppartment(Model model) {
+        setUserCredentials(model);
+        model.addAttribute("title", "Добавление жилого комплекса");
+        return "manufacturers/add_or_update_form";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('APPARTMENT_CREATE', 'SUPER_ADMIN')")
+    @PostMapping("/appartment/add")
+    public String createAppartment(@Validated @ModelAttribute("appartment") AppartmentModel appartmentModel) {
+        appartmentService.create(appartmentModel);
         return "redirect:/admin/manufacturer/list";
     }
 
@@ -227,7 +268,7 @@ public class AdminController {
         return "redirect:/admin/serie/list";
     }
 
-    public void setUserCredentials(Model model){
+    public void setUserCredentials(Model model) {
         getCurrentUser();
         Long id = currentUser.getId();
         model.addAttribute("name", userService.getById(id) != null ? userService.getById(id).getName() : "Имя");
@@ -240,7 +281,7 @@ public class AdminController {
         currentUser = userService.getUserByUsername(userDetails.getUsername());
     }
 
-//    @PreAuthorize("isAuthenticated() and hasPermission('USER_CREATE', 'SUPER_ADMIN')")
+    //    @PreAuthorize("isAuthenticated() and hasPermission('USER_CREATE', 'SUPER_ADMIN')")
 //    @PostMapping(value = "/user/add")
 //    public String addEmployee(@ModelAttribute("UserModel") UserModel userModel) {
 //        employeeService.create(employeeModel);

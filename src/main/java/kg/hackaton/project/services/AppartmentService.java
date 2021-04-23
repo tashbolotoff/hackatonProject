@@ -13,4 +13,6 @@ public interface AppartmentService {
     Appartment update(AppartmentModel appartmentModel);
 
     String delete(Long id);
+
+    Appartment getById(Long id);
 }

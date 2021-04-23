@@ -13,4 +13,6 @@ public interface ManufacturerService {
     Manufacturer update(ManufacturerModel manufacturerModel);
 
     String delete(Long id);
+
+    Manufacturer getById(Long id);
 }

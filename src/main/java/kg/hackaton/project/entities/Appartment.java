@@ -3,6 +3,7 @@ package kg.hackaton.project.entities;
 import kg.hackaton.project.enums.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -60,4 +61,12 @@ public class Appartment extends Audit<String>{
     @Enumerated(EnumType.STRING)
     @Column(name = "busy_or_free_status")
     BusyOrFreeStatus busyOrFreeStatus;
+
+    @NumberFormat(pattern = "###.######")
+    @Column(name = "latitude")
+    Double latitude;
+
+    @NumberFormat(pattern = "###.######")
+    @Column(name = "longitude")
+    Double longitude;
 }

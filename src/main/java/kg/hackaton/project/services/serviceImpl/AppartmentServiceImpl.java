@@ -44,6 +44,8 @@ public class AppartmentServiceImpl implements AppartmentService {
                 .typeOfHouse(appartmentModel.getTypeOfHouse() != null ? TypeOfHouse.valueOf(appartmentModel.getTypeOfHouse()) : null)
                 .typeOfSale(appartmentModel.getTypeOfSale() != null ? TypeOfSale.valueOf(appartmentModel.getTypeOfSale()) : null)
                 .busyOrFreeStatus(appartmentModel.getBusyOrFreeStatus() != null ? BusyOrFreeStatus.valueOf(appartmentModel.getBusyOrFreeStatus()): null)
+                .latitude(appartmentModel.getLatitude() != null ? appartmentModel.getLatitude() : null)
+                .longitude(appartmentModel.getLongitude() != null ? appartmentModel.getLongitude() : null)
                 .build();
         return appartmentRepo.save(appartment);
     }
@@ -63,6 +65,8 @@ public class AppartmentServiceImpl implements AppartmentService {
                     newAppartment.setTypeOfHouse(appartmentModel.getTypeOfHouse() != null ? TypeOfHouse.valueOf(appartmentModel.getTypeOfHouse()) : null);
                     newAppartment.setTypeOfSale(appartmentModel.getTypeOfSale() != null ? TypeOfSale.valueOf(appartmentModel.getTypeOfSale()) : null);
                     newAppartment.setBusyOrFreeStatus(appartmentModel.getBusyOrFreeStatus() != null ? BusyOrFreeStatus.valueOf(appartmentModel.getBusyOrFreeStatus()): null);
+                    newAppartment.setLatitude(appartmentModel.getLatitude() != null ? appartmentModel.getLatitude() : null);
+                    newAppartment.setLongitude(appartmentModel.getLongitude() != null ? appartmentModel.getLongitude() : null);
                     return appartmentRepo.save(newAppartment);
                 }).orElseThrow(() ->
                         new RecordNotFoundException("Record not found with id " + appartmentModel.getId()));

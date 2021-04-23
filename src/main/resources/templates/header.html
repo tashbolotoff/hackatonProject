@@ -38,7 +38,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                <a href=".">
+                <a href="/">
                     <img th:src="@{/logos/logo.png}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
                 </a>
             </h1>
@@ -171,6 +171,10 @@
                                         <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('APPARTMENT_READ')"
                                            class="dropdown-item" href="/admin/appartment/list">
                                             Квартиры/Дома
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('APPARTMENT_READ')"
+                                           class="dropdown-item" href="/admin/charts">
+                                            Диаграммы/Чарты
                                         </a>
                                     </div>
 <!--                                    <div class="dropdown-menu-column">-->

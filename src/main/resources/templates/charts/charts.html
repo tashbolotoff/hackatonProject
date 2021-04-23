@@ -1,0 +1,341 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head th:replace="header :: head">
+    <meta charset="utf-8">
+</head>
+<body>
+<div class="wrapper">
+    <div th:replace="header :: header"></div>
+    <br>
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-xl-4">
+                    <h2 class="page-title">
+                        Количество квартир в зависимости от типа продажи
+                    </h2>
+                    <br>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="chart-demo-pie-typeofsale"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                    <h2 class="page-title">
+                        Количество квартир в зависимости от комнат
+                    </h2>
+                    <br>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="chart-demo-pie-rooms"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                    <h2 class="page-title">
+                        Количество квартир в зависимости от занятости
+                    </h2>
+                    <br>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="chart-demo-pie-busy"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <h2 class="page-title">
+                        Количество квартир в зависимости от ЖК
+                    </h2>
+                    <br>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="chart-tasks-overview"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    // @formatter:off
+    var list = [[${list}]];
+    var countArenda = 0;
+    var countProdaja = 0;
+    var countLizing = 0;
+    console.log(list)
+    for (i = 0; i < list.length; i++) {
+        if (list[i].typeOfSale.valueOf(list[i].typeOfSale) == 'Аренда') {
+            countArenda++;
+        } else if (list[i].typeOfSale.valueOf(list[i].typeOfSale) == 'Продажа') {
+            countProdaja++;
+        } else if (list[i].typeOfSale.valueOf(list[i].typeOfSale) == 'Лизинг') {
+            countLizing++;
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie-typeofsale'), {
+            chart: {
+                type: "donut",
+                fontFamily: 'inherit',
+                height: 240,
+                sparkline: {
+                    enabled: true
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            fill: {
+                opacity: 1,
+            },
+
+            series: [countArenda, countProdaja, countLizing],
+            labels: ["Аренда", "Продажа", "Лизинг"],
+            grid: {
+                strokeDashArray: 4,
+            },
+            colors: ["#206bc4", "#79a6dc", "#d2e1f3"],
+            legend: {
+                show: true,
+                position: 'bottom',
+                offsetY: 12,
+                markers: {
+                    width: 10,
+                    height: 10,
+                    radius: 100,
+                },
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 8
+                },
+            },
+            tooltip: {
+                fillSeriesColor: false
+            },
+        })).render();
+    });
+    // @formatter:on
+</script>
+<script th:inline="javascript">
+    // @formatter:off
+    var list = [[${list}]];
+    var count1Room = 0;
+    var count2Room = 0;
+    var count3Room = 0;
+    var count4Room = 0;
+    var count5Room = 0;
+    var count6Room = 0;
+    for (i = 0; i < list.length; i++) {
+        if (list[i].countOfRooms.valueOf(list[i].countOfRooms) == 1) {
+            count1Room++;
+        } else if (list[i].countOfRooms.valueOf(list[i].countOfRooms) == 2) {
+            count2Room++;
+        } else if (list[i].countOfRooms.valueOf(list[i].countOfRooms) == 3) {
+            count3Room++;
+        } else if (list[i].countOfRooms.valueOf(list[i].countOfRooms) == 4) {
+            count4Room++;
+        } else if (list[i].countOfRooms.valueOf(list[i].countOfRooms) == 5) {
+            count5Room++;
+        } else if (list[i].countOfRooms.valueOf(list[i].countOfRooms) == 6) {
+            count6Room++;
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie-rooms'), {
+            chart: {
+                type: "donut",
+                fontFamily: 'inherit',
+                height: 240,
+                sparkline: {
+                    enabled: true
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            fill: {
+                opacity: 1,
+            },
+
+            series: [count1Room, count2Room, count3Room, count4Room, count5Room, count6Room],
+            labels: ["1 комнатные", "2 комнатные", "3 комнатные", "4 комнатные", "5 комнатные", "6 комнатные"],
+            grid: {
+                strokeDashArray: 4,
+            },
+            colors: ["#206bc4", "#79a6dc", "#d2e1f3"],
+            legend: {
+                show: true,
+                position: 'bottom',
+                offsetY: 12,
+                markers: {
+                    width: 10,
+                    height: 10,
+                    radius: 100,
+                },
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 8
+                },
+            },
+            tooltip: {
+                fillSeriesColor: false
+            },
+        })).render();
+    });
+    // @formatter:on
+</script>
+<script th:inline="javascript">
+    // @formatter:off
+    var list = [[${list}]];
+    var countFree = 0;
+    var countBusy = 0;
+    for (i = 0; i < list.length; i++) {
+        if (list[i].busyOrFreeStatus.valueOf(list[i].busyOrFreeStatus) == 'Свободно') {
+            countFree++;
+        } else if (list[i].busyOrFreeStatus.valueOf(list[i].busyOrFreeStatus) == 'Занято') {
+            countBusy++;
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie-busy'), {
+            chart: {
+                type: "donut",
+                fontFamily: 'inherit',
+                height: 240,
+                sparkline: {
+                    enabled: true
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            fill: {
+                opacity: 1,
+            },
+
+            series: [countFree, countBusy],
+            labels: ["Занятые", "Свободные"],
+            grid: {
+                strokeDashArray: 4,
+            },
+            colors: ["#206bc4", "#79a6dc", "#d2e1f3"],
+            legend: {
+                show: true,
+                position: 'bottom',
+                offsetY: 12,
+                markers: {
+                    width: 10,
+                    height: 10,
+                    radius: 100,
+                },
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 8
+                },
+            },
+            tooltip: {
+                fillSeriesColor: false
+            },
+        })).render();
+    });
+    // @formatter:on
+</script>
+<script th:inline="javascript">
+    // @formatter:off
+    var list = [[${list}]];
+    var count1 = 0;
+    var count2 = 0;
+    var count3 = 0;
+    var count4 = 0;
+    var count5 = 0;
+    var count6 = 0;
+    var count7 = 0;
+    for (i = 0; i < list.length; i++) {
+        if (list[i].manufacturer.name == 'ЖК Элит хаус') {
+            count1++;
+        } else if (list[i].manufacturer.name == 'ЖК Авангард') {
+            count2++;
+        } else if (list[i].manufacturer.name == 'ЖК Олимп') {
+            count3++;
+        } else if (list[i].manufacturer.name == 'ЖК Итальянский квартал') {
+            count4++;
+        } else if (list[i].manufacturer.name == 'ЖК Нью-Йорк') {
+            count5++;
+        } else if (list[i].manufacturer.name == 'ЖК 7 Авеню') {
+            count6++;
+        } else if (list[i].manufacturer.name == 'ЖК Английский квартал') {
+            count7++;
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-tasks-overview'), {
+            chart: {
+                type: "bar",
+                fontFamily: 'inherit',
+                height: 320,
+                parentHeightOffset: 0,
+                toolbar: {
+                    show: false,
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%',
+                }
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            fill: {
+                opacity: 1,
+            },
+            series: [{
+                name: "A",
+                data: [count1, count2, count3, count4,count5,count6, count7]
+            }],
+            grid: {
+                padding: {
+                    top: -20,
+                    right: 0,
+                    left: -4,
+                    bottom: -4
+                },
+                strokeDashArray: 4,
+            },
+            xaxis: {
+                labels: {
+                    padding: 0,
+                },
+                tooltip: {
+                    enabled: false
+                },
+                axisBorder: {
+                    show: false,
+                },
+                categories: ['ЖК Элит хаус', 'ЖК Авангард', 'ЖК Олимп', 'ЖК Итальянский квартал', 'ЖК Нью-Йорк', 'ЖК 7 Авеню', 'ЖК Английский квартал'],
+            },
+            yaxis: {
+                labels: {
+                    padding: 4
+                },
+            },
+            colors: ["#206bc4"],
+            legend: {
+                show: false,
+            },
+        })).render();
+    });
+    // @formatter:on
+</script>
+
+<footer th:replace="header :: footer"></footer>
+</body>
+</html>

@@ -347,12 +347,18 @@ public class AdminController {
         }
         PermissionModel permissionModel = new PermissionModel();
         permissionModel.setPermissionBools(permissionBoolModels);
-
         model.addAttribute("permissionModel", permissionModel);
         model.addAttribute("counter", new Counter());
         model.addAttribute("permissionCategories", permissionCategoryRepo.findAll());
         setUserCredentials(model);
         return "permissions/permissionEditList";
+    }
+
+    @GetMapping("/charts")
+    public String getChart(Model model) {
+        model.addAttribute("list", appartmentService.findAll());
+        setUserCredentials(model);
+        return "charts/charts";
     }
 
     public void setUserCredentials(Model model){

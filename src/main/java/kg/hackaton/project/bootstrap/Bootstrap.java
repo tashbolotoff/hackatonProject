@@ -426,6 +426,27 @@ public class Bootstrap implements CommandLineRunner {
                 .build();
         serieRepo.save(fourteen);
 
+        //MANUFACTURERS
+        Manufacturer manufacturerItalia = Manufacturer.builder()
+                .name("ЖК Итальянский квартал")
+                .build();
+        manufacturerRepo.save(manufacturerItalia);
+
+        Manufacturer manufacturerNewYork = Manufacturer.builder()
+                .name("ЖК Нью-Йорк")
+                .build();
+        manufacturerRepo.save(manufacturerNewYork);
+
+        Manufacturer manufacturerAvenue = Manufacturer.builder()
+                .name("ЖК 7 Авеню")
+                .build();
+        manufacturerRepo.save(manufacturerAvenue);
+
+        Manufacturer manufacturerEnglish = Manufacturer.builder()
+                .name("ЖК Английский квартал")
+                .build();
+        manufacturerRepo.save(manufacturerEnglish);
+
         try (InputStream inp = new FileInputStream(filespath + "rayons.xls")) {
             Workbook wb = WorkbookFactory.create(inp);
             Sheet sheet = wb.getSheetAt(0);
@@ -453,8 +474,8 @@ public class Bootstrap implements CommandLineRunner {
         }
 
         Appartment appartment = Appartment.builder()
-                .rayon(rayonRepo.getOne(28L))
-                .countOfRooms(3)
+                .rayon(rayonRepo.getOne(67L))
+                .countOfRooms(1)
                 .stage(5)
                 .price(new BigDecimal(8000))
                 .address("ул. Боконбаева 39")
@@ -470,8 +491,8 @@ public class Bootstrap implements CommandLineRunner {
         appartmentRepo.save(appartment);
 
         Appartment appartment1 = Appartment.builder()
-                .rayon(rayonRepo.getOne(28L))
-                .countOfRooms(3)
+                .rayon(rayonRepo.getOne(67L))
+                .countOfRooms(1)
                 .stage(5)
                 .price(new BigDecimal(60000))
                 .address("ул. Исанова 30")
@@ -487,7 +508,7 @@ public class Bootstrap implements CommandLineRunner {
         appartmentRepo.save(appartment1);
 
         Appartment appartment2 = Appartment.builder()
-                .rayon(rayonRepo.getOne(28L))
+                .rayon(rayonRepo.getOne(67L))
                 .countOfRooms(3)
                 .stage(5)
                 .price(new BigDecimal(120000))
@@ -497,10 +518,78 @@ public class Bootstrap implements CommandLineRunner {
                 .condition(Condition.Хорошее)
                 .typeOfHouse(TypeOfHouse.Дом)
                 .typeOfSale(TypeOfSale.Лизинг)
-                .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
+                .busyOrFreeStatus(BusyOrFreeStatus.Занято)
                 .latitude(42.8661323)
                 .longitude(74.569608)
                 .build();
         appartmentRepo.save(appartment2);
+
+        Appartment appartment3 = Appartment.builder()
+                .rayon(rayonRepo.getOne(67L))
+                .countOfRooms(4)
+                .stage(5)
+                .price(new BigDecimal(120000))
+                .address("ул. Асаналиева 45")
+                .manufacturer(manufacturerItalia)
+                .serie(eleven)
+                .condition(Condition.Хорошее)
+                .typeOfHouse(TypeOfHouse.Дом)
+                .typeOfSale(TypeOfSale.Лизинг)
+                .busyOrFreeStatus(BusyOrFreeStatus.Занято)
+                .latitude(42.8661323)
+                .longitude(74.569608)
+                .build();
+        appartmentRepo.save(appartment3);
+
+        Appartment appartment4 = Appartment.builder()
+                .rayon(rayonRepo.getOne(67L))
+                .countOfRooms(2)
+                .stage(5)
+                .price(new BigDecimal(120000))
+                .address("ул. Асаналиева 45")
+                .manufacturer(manufacturerNewYork)
+                .serie(eleven)
+                .condition(Condition.Хорошее)
+                .typeOfHouse(TypeOfHouse.Дом)
+                .typeOfSale(TypeOfSale.Аренда)
+                .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
+                .latitude(42.8661323)
+                .longitude(74.569608)
+                .build();
+        appartmentRepo.save(appartment4);
+
+        Appartment appartment5 = Appartment.builder()
+                .rayon(rayonRepo.getOne(67L))
+                .countOfRooms(1)
+                .stage(5)
+                .price(new BigDecimal(120000))
+                .address("ул. Асаналиева 45")
+                .manufacturer(manufacturerAvenue)
+                .serie(eleven)
+                .condition(Condition.Хорошее)
+                .typeOfHouse(TypeOfHouse.Дом)
+                .typeOfSale(TypeOfSale.Лизинг)
+                .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
+                .latitude(42.8661323)
+                .longitude(74.569608)
+                .build();
+        appartmentRepo.save(appartment5);
+
+        Appartment appartment6 = Appartment.builder()
+                .rayon(rayonRepo.getOne(67L))
+                .countOfRooms(5)
+                .stage(5)
+                .price(new BigDecimal(120000))
+                .address("ул. Асаналиева 45")
+                .manufacturer(manufacturerEnglish)
+                .serie(eleven)
+                .condition(Condition.Хорошее)
+                .typeOfHouse(TypeOfHouse.Дом)
+                .typeOfSale(TypeOfSale.Лизинг)
+                .busyOrFreeStatus(BusyOrFreeStatus.Занято)
+                .latitude(42.8661323)
+                .longitude(74.569608)
+                .build();
+        appartmentRepo.save(appartment6);
     }
 }

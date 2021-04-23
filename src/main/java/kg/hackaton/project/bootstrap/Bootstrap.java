@@ -35,6 +35,11 @@ public class Bootstrap implements CommandLineRunner {
                 .build();
         userRoleRepo.save(adminRole);
 
+        UserRole saleManagerRole = UserRole.builder()
+                .name("ROLE_MANAGER")
+                .build();
+        userRoleRepo.save(saleManagerRole);
+
         // USERS
         User admin = User.builder()
                 .username("admin")
@@ -42,5 +47,12 @@ public class Bootstrap implements CommandLineRunner {
                 .userRole(adminRole)
                 .build();
         userRepo.save(admin);
+
+        User saleManager = User.builder()
+                .username("manager")
+                .password(passwordEncoder.encode("manager"))
+                .userRole(saleManagerRole)
+                .build();
+        userRepo.save(saleManager);
     }
 }

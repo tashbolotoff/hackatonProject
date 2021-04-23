@@ -14,8 +14,9 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 public class UserModel {
+    Long id;
 
-    Long  userRoleId;
+    Long userRoleId;
 
     String username;
 

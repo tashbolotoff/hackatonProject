@@ -2,6 +2,7 @@ package kg.hackaton.project.configs;
 
 import kg.hackaton.project.entities.User;
 import kg.hackaton.project.exceptions.RecordNotFoundException;
+import kg.hackaton.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;

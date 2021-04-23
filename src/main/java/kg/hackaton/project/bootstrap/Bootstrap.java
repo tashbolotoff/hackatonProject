@@ -52,9 +52,15 @@ public class Bootstrap implements CommandLineRunner {
         User admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
+                .name("Бакай")
+                .surname("Кыдырбек уулу")
+                .phone("0773508744")
+                .email("bakaiks312@gmail.com")
+                .dateOfBirth(new Date())
                 .userRole(adminRole)
                 .build();
         userRepo.save(admin);
+
 
 
         // OBLASTS

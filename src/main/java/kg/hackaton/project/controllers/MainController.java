@@ -20,7 +20,7 @@ public class MainController {
     @GetMapping("/success")
     public String getMainPage(HttpServletRequest request) {
         if (request.isUserInRole("ROLE_ADMIN")) {
-            return "redirect:/";
+            return "redirect:/admin/user/list";
         } else if(request.isUserInRole("ROLE_MANAGER")){
             return "redirect:/";
         }

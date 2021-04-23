@@ -29,5 +29,5 @@ public class ClientModel {
 
     String dateOfBirth;
 
-    Appartment appartment;
+    Long appartmentId;
 }

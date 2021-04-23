@@ -15,5 +15,5 @@ public class ImgPathModel {
 
     String path;
 
-    Appartment appartment;
+    Long appartmentId;
 }

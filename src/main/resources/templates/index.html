@@ -1,0 +1,43 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head th:replace="header :: head">
+  <meta charset="utf-8">
+</head>
+
+  <body class="antialiased">
+    <div class="wrapper">
+      <div th:replace="header :: header"></div>
+      <div class="page-wrapper">
+        <div class="container-fluid">
+          <!-- Page title -->
+          <div class="page-header d-print-none">
+            <div class="row align-items-center">
+              <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  Надзаголовок страницы
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page-body">
+          <div class="container-fluid d-flex flex-column justify-content-center">
+            <div class="empty">
+              <div class="empty-img"><img th:src="@{/illustrations/undraw_printing_invoices_5r4r.svg}" height="128"  alt="">
+              </div>
+              <p class="empty-title">На стадии разработки</p>
+              <p class="empty-subtitle text-muted">
+                Скоро здесь будут дашборды
+              </p>
+            </div>
+          </div>
+        </div>
+     <footer th:replace="header :: footer"></footer>
+      </div>
+    </div>
+
+  </body>
+</html>

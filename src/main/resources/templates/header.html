@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:fragment="head">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title th:text="${title != null ? title : 'Главная страница'}"></title>
+    <!-- CSS files -->
+    <link th:href="@{/css/tabler.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/tabler-flags.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/tabler-payments.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/tabler-vendors.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/demo.min.css}" rel="stylesheet"/>
+    <link th:href="@{/select2/css/select2.min.css}" rel="stylesheet"/>
+    <!-- DataTables -->
+    <link rel="stylesheet" th:href="@{/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/datatables-buttons/css/buttons.bootstrap4.min.css}">
+
+    <!-- Libs JS -->
+    <script th:src="@{/libs/apexcharts/dist/apexcharts.min.js}"></script>
+    <!-- Tabler Core -->
+    <script th:src="@{/js/tabler.min.js}"></script>
+    <!-- jQuery -->
+    <script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+    <!-- jQuery -->
+    <script th:src="@{/select2/js/select2.min.js}"></script>
+    <script src="http://localhost:35729/livereload.js"></script>
+</head>
+<body class="antialiased">
+<div th:fragment="header">
+    <header class="navbar navbar-expand-md navbar-light d-print-none">
+
+
+    </header>
+    <div class="navbar-expand-md">
+        <div class="collapse navbar-collapse" id="navbar-menu">
+            <div class="navbar navbar-light">
+                <div class="container-fluid">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                           stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                           stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline
+                              points="5 12 3 12 12 3 21 12 19 12"/><path
+                              d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path
+                              d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg>
+                    </span>
+                                <span class="nav-link-title">
+                      Главная
+                    </span>
+                            </a>
+                        </li>
+                        <li class="nav-item"
+                            sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('NOTIFICATION_READ')">
+                            <a class="nav-link" href="/notification/list">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notification"
+                                   width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                   fill="none"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <circle cx="17" cy="7" r="3"></circle>
+                             </svg>
+                            </span>
+                                <span class="nav-link-title">
+                              Экстренное извещение
+                            </span>
+                            </a>
+                        </li>
+
+
+                        <li sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('USER_READ') OR hasAuthority('POSITION_READ') OR
+                                                                            hasAuthority('ORGANIZATION_READ') OR hasAuthority('ORGANIZATIONTYPE_READ') OR
+                                                                            hasAuthority('CITIZENSHIP_READ') OR hasAuthority('NOTIFICATIONTYPE_READ') OR
+                                                                            hasAuthority('RAYON_READ') OR hasAuthority('MKBDIAGNOSE_READ') OR hasAuthority('PATHOGEN_READ') OR
+                                                                            hasAuthority('OBLAST_READ')" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                               role="button" aria-expanded="false">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-text"
+                             width="24"
+                             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/>
+                        <line x1="9" y1="9" x2="10" y2="9"/>
+                        <line x1="9" y1="13" x2="15" y2="13"/>
+                        <line x1="9" y1="17" x2="15" y2="17"/>
+                      </svg>
+                    </span>
+                                <span class="nav-link-title" >
+                      Справочники
+                    </span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('USER_READ')"
+                                           class="dropdown-item" href="/admin/user/list">
+                                            Пользователи
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('POSITION_READ')"
+                                           class="dropdown-item" href="/admin/position/list">
+                                            Должности
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('ORGANIZATION_READ')"
+                                           class="dropdown-item" href="/admin/organization/list">
+                                            Организации
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('ORGANIZATIONTYPE_READ')"
+                                           class="dropdown-item" href="/admin/organizationType/list">
+                                            Типы организаций
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('CITIZENSHIP_READ')"
+                                           class="dropdown-item" href="/admin/citizenship/list">
+                                            Список гражданств
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('NOTIFICATIONTYPE_READ')"
+                                           class="dropdown-item" href="/admin/notificationType/list">
+                                            Виды извещений
+                                        </a>
+
+                                    </div>
+                                    <div class="dropdown-menu-column">
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('RAYON_READ')"
+                                           class="dropdown-item" href="/admin/rayon/list">
+                                            Районы
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('MKBDIAGNOSE_READ')"
+                                           class="dropdown-item" href="/admin/mkbDiagnose/list">
+                                            МКБ-10 диагнозы
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('PATHOGEN_READ')"
+                                           class="dropdown-item" href="/admin/pathogen/list">
+                                            Патогены
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('OBLAST_READ')"
+                                           class="dropdown-item" href="/admin/oblast/list">
+                                            Области
+                                        </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('SOCRPIVSTATUS_READ')"
+                                           class="dropdown-item" href="/admin/socprivstatus/list">
+                                            Социальные статусы
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="hasAuthority('SUPER_ADMIN')">
+                            <a class="nav-link" href="/admin/userRole/permissions">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notification"
+                                   width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                   fill="none"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <circle cx="17" cy="7" r="3"></circle>
+                             </svg>
+                            </span>
+                                <span class="nav-link-title">
+                              Выдача привилегий по ролям
+                            </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                        <form action="." method="get">
+                            <div class="input-icon">
+                    <span class="input-icon-addon">
+                      <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                           stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                           stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10"
+                                                                                                              cy="10"
+                                                                                                              r="7"/><line
+                              x1="21" y1="21" x2="15" y2="15"/></svg>
+                    </span>
+                                <input type="text" class="form-control" placeholder="Поиск…"
+                                       aria-label="Поиск по сайту">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer th:fragment="footer" class="footer footer-transparent d-print-none">
+    <div class="container-fluid">
+        <div class="row text-center align-items-center flex-row-reverse">
+            <div class="col-lg-auto ms-lg-auto">
+                <ul class="list-inline list-inline-dots mb-0">
+                    <li class="list-inline-item">
+                        <a href="https://socservice.kg" target="_blank" class="link-secondary" rel="noopener">
+                            Разработано ГП "Соцсервис"
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                <ul class="list-inline list-inline-dots mb-0">
+                    <li class="list-inline-item">
+                        Copyright &copy; 2021
+                        Все права защищены.
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="link-secondary" rel="noopener">v1.0.0</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

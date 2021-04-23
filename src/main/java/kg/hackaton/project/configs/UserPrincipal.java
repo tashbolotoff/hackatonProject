@@ -1,7 +1,8 @@
 package kg.hackaton.project.configs;
 
-import kg.socservice.epidPlatform.entities.Permission;
-import kg.socservice.epidPlatform.entities.User;
+
+import kg.hackaton.project.entities.Permission;
+import kg.hackaton.project.entities.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

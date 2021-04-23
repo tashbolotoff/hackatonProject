@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
                     .email(userModel.getEmail() != null ? userModel.getEmail() : null)
                     .phone(userModel.getPhone() != null ? userModel.getPhone() : null)
                     .dateOfBirth(userModel.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").parse(userModel.getDateOfBirth()) : null)
+                    .userStatus(UserStatus.АКТИВИРОВАН)
                     .build();
         } catch (ParseException e) {
             e.printStackTrace();

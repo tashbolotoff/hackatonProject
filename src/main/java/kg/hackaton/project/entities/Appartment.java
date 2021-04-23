@@ -71,6 +71,6 @@ public class Appartment extends Audit<String>{
     @Column(name = "longitude")
     Double longitude;
 
-    @OneToMany(mappedBy = "imgPath", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ImgPath> imgPathList;
+//    @OneToMany(mappedBy = "imgPath", cascade = CascadeType.ALL, orphanRemoval = true)
+//    List<ImgPath> imgPathList;
 }

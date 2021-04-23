@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,9 +46,8 @@ public class Client extends Audit<String> {
     @Column(name = "date_of_birth")
     Date dateOfBirth;
 
-    @ManyToOne
-    @JoinColumn(name = "appartment_id")
-    Appartment appartment;
+//    @OneToMany(mappedBy = "appartments", cascade = CascadeType.ALL, orphanRemoval = true)
+//    List<Appartment> appartments;
 
     @OneToOne
     @JoinColumn(name = "user_id")

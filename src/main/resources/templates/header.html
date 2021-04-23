@@ -53,7 +53,7 @@
                        aria-label="Show notifications">
                         <!-- <img src="./static/icons/bell.svg"/> -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round">
                         <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"/>
                         <path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
                         </svg>
@@ -119,11 +119,9 @@
                         </li>
 
 
-                        <li sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('USER_READ') OR hasAuthority('POSITION_READ') OR
-                                                                            hasAuthority('ORGANIZATION_READ') OR hasAuthority('ORGANIZATIONTYPE_READ') OR
-                                                                            hasAuthority('CITIZENSHIP_READ') OR hasAuthority('NOTIFICATIONTYPE_READ') OR
-                                                                            hasAuthority('RAYON_READ') OR hasAuthority('MKBDIAGNOSE_READ') OR hasAuthority('PATHOGEN_READ') OR
-                                                                            hasAuthority('OBLAST_READ')" class="nav-item dropdown">
+                        <li sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('USER_READ') OR hasAuthority('OBLAST_READ') OR
+                                                                            hasAuthority('RAYON_READ') OR hasAuthority('MANUFACTURER_READ') OR
+                                                                            hasAuthority('CLIENT_READ') OR hasAuthority('SERIE_READ')" class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                role="button" aria-expanded="false">
                     <span class="nav-link-icon d-md-none d-lg-inline-block">

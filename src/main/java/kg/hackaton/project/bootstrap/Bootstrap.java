@@ -208,13 +208,27 @@ public class Bootstrap implements CommandLineRunner {
         UserRole userRoleAdmin = UserRole.builder()
                 .name("ROLE_ADMIN")
                 .build();
-        ArrayList<Permission> permissionArrayList = new ArrayList<>();
-        permissionArrayList.add(permissionAdmin);
-        userRoleAdmin.setPermissions(permissionArrayList);
+        ArrayList<Permission> permissionArrayListAdmin = new ArrayList<>();
+        permissionArrayListAdmin.add(permissionAdmin);
         if (userRoleAdmin.getPermissions() != null) {
-            permissionArrayList.addAll(userRoleAdmin.getPermissions());
+            permissionArrayListAdmin.addAll(userRoleAdmin.getPermissions());
         }
+        userRoleAdmin.setPermissions(permissionArrayListAdmin);
         userRoleRepo.save(userRoleAdmin);
+
+        // ROLES
+        UserRole userRoleManager = UserRole.builder()
+                .name("ROLE_MANAGER")
+                .build();
+        ArrayList<Permission> permissionArrayList = new ArrayList<>();
+        permissionArrayList.add(permissionClientRead);
+        permissionArrayList.add(permissionClientCreate);
+        permissionArrayList.add(permissionClientUpdate);
+        if (userRoleManager.getPermissions() != null) {
+            permissionArrayList.addAll(userRoleManager.getPermissions());
+        }
+        userRoleManager.setPermissions(permissionArrayList);
+        userRoleRepo.save(userRoleManager);
 
         // USERS
         User admin = User.builder()
@@ -230,7 +244,19 @@ public class Bootstrap implements CommandLineRunner {
                 .build();
         userRepo.save(admin);
 
-
+        User manager = User.builder()
+                .username("manager")
+                .password(passwordEncoder.encode("manager"))
+                .userStatus(UserStatus.АКТИВИРОВАН)
+                .name("Абдулло")
+                .surname("Каримов")
+                .middleName("Ахмадилаевич")
+                .phone("0773508744")
+                .email("obdul@gmail.com")
+                .dateOfBirth(new Date())
+                .userRole(userRoleManager)
+                .build();
+        userRepo.save(manager);
 
         // OBLASTS
         Oblast bishkek = Oblast.builder()

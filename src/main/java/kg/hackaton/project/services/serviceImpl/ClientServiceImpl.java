@@ -35,7 +35,7 @@ public class ClientServiceImpl implements ClientService {
                     .passportNumber(clientModel.getPassportNumber() != null ? clientModel.getPassportNumber() : null)
                     .pin(clientModel.getPin() != null ? clientModel.getPin() : null)
                     .dateOfBirth(clientModel.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").parse(clientModel.getDateOfBirth()) : null)
-                    .appartment(appartmentRepo.getOne(clientModel.getAppartmentId()))
+//                    .appartment(appartmentRepo.getOne(clientModel.getAppartmentId()))
                     .build();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class ClientServiceImpl implements ClientService {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    newClient.setAppartment(clientModel.getAppartmentId() != null ? appartmentRepo.getOne(clientModel.getAppartmentId()) : null);
+//                    newClient.setAppartment(clientModel.getAppartmentId() != null ? appartmentRepo.getOne(clientModel.getAppartmentId()) : null);
                     return clientRepo.save(newClient);
                 }).orElseThrow(() ->
                         new RecordNotFoundException("Record not found with id:" + clientModel.getClientId()));

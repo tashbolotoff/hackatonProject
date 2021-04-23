@@ -7,9 +7,11 @@ import kg.hackaton.project.repositories.AppartmentRepo;
 import kg.hackaton.project.repositories.ImgPathRepo;
 import kg.hackaton.project.services.ImgPathService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ImgServiceImpl implements ImgPathService {
 
     @Autowired

@@ -60,24 +60,24 @@
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Логин</label>
                                         <div class="col">
-                                            <input type="text" id="username" name="userModel.username" class="form-control" th:value="${user != null ? user.getUser().getUsername() : ''}">
+                                            <input type="text" id="username" name="username" class="form-control" th:value="${user != null ? user.getUsername() : ''}">
                                             <small class="form-hint text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Пароль</label>
                                         <div class="col">
-                                            <input id="password" name="userModel.password" type="password" class="form-control" placeholder="Пароль">
+                                            <input id="password" name="password" type="password" class="form-control" placeholder="Пароль">
                                             <small class="form-hint text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Роль</label>
                                         <div class="col">
-                                            <select id="userRoleId" name="userModel.userRoleId" class="form-select">
+                                            <select id="userRoleId" name="userRoleId" class="form-select">
                                                 <option th:each="role: ${roles}" th:value="${role.getId()}"
                                                         th:text="${role.getName()}"
-                                                th:selected="${user != null ? user.getUser().getUserRole().getId() == role.getId() : false}"></option>
+                                                th:selected="${user != null ? user.getId() == role.getId() : false}"></option>
                                             </select>
                                         </div>
                                     </div>

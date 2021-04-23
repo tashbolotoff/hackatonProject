@@ -2,6 +2,7 @@ package kg.hackaton.project.bootstrap;
 
 
 import kg.hackaton.project.entities.*;
+import kg.hackaton.project.enums.UserStatus;
 import kg.hackaton.project.repositories.*;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +103,7 @@ public class Bootstrap implements CommandLineRunner {
 
         Permission permissionRayonUpdate = Permission.builder()
                 .name("RAYON_UPDATE")
-                .nameRu("Изменение рай  онов")
+                .nameRu("Изменение районов")
                 .permissionCategory(permissionCategoryRayon)
                 .build();
         permissionRepo.save(permissionRayonUpdate);
@@ -123,6 +124,7 @@ public class Bootstrap implements CommandLineRunner {
         User admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
+                .userStatus(UserStatus.АКТИВИРОВАН)
                 .name("Бакай")
                 .surname("Кыдырбек уулу")
                 .phone("0773508744")

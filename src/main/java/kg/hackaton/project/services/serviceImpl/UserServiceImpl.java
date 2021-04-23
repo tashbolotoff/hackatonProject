@@ -1,6 +1,7 @@
 package kg.hackaton.project.services.serviceImpl;
 
 import kg.hackaton.project.entities.User;
+import kg.hackaton.project.enums.UserStatus;
 import kg.hackaton.project.exceptions.RecordNotFoundException;
 import kg.hackaton.project.models.UserModel;
 import kg.hackaton.project.repositories.UserRepo;
@@ -78,6 +79,18 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() ->
                     new RecordNotFoundException("Record not found with id:" + userModel.getId()));
     }
+
+    @Override
+    public User changeUserStatus(Long userId) {
+        return userRepo.findById(userId)
+                .map(newUser -> {
+                    newUser.setUserStatus(userRepo.getOne(userId).getUserStatus() == UserStatus.АКТИВИРОВАН ? UserStatus.ДЕАКТИВИРОВАН : UserStatus.АКТИВИРОВАН);
+                    return userRepo.save(newUser);
+                }).
+                        orElseThrow(() ->
+                                new RecordNotFoundException("Record not found with id:" + userId));
+    }
+
     @Override
     public User getUserByUsername(String username) {
         return userRepo.getByUsername(username);

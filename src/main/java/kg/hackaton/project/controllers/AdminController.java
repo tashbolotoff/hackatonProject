@@ -75,7 +75,7 @@ public class AdminController {
         model.addAttribute("title", "Редактирование пользователя");
         model.addAttribute("roles", userRoleService.getAllUserRoles());
         model.addAttribute("user", user);
-        return "users/user_edit_form";
+        return "users/user_form";
     }
 
     // OBLAST
@@ -85,6 +85,12 @@ public class AdminController {
         model.addAttribute("title", "Список областей");
         model.addAttribute("oblasts", oblastService.findAll());
         return "oblasts/oblast_list";
+    }
+
+    @PostMapping(value = "/user/changeStatus/{id}")
+    public String changeUserStatus(@PathVariable("id") Long userId) {
+        userService.changeUserStatus(userId);
+        return "redirect:/admin/user/list";
     }
 
     //RAYON

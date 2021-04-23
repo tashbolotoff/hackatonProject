@@ -68,9 +68,15 @@
                                         <td th:text="${#dates.format(user.getDateOfBirth(), 'yyyy-MM-dd')}"></td>
 
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-primary">Подробнее</button>
                                             <a th:href="'/admin/user/' + ${user.getId()}" class="btn btn-sm btn-success">Изменить</a>
-                                            <button class="btn btn-sm btn-danger">Удалить</button>
+                                            <form th:id="${user.getId()}"
+                                                      th:action="'/admin/user/changeStatus/'+${user.getId()}"
+                                                      method="post">
+                                                <button th:class="${user.getUserStatus().name() == 'АКТИВИРОВАН' ? 'btn btn-sm btn-danger' : 'btn btn-sm     btn-success'}"
+                                                        th:text="${user.getUserStatus().name() == 'АКТИВИРОВАН' ? 'Деактивировать' : 'Активировать'}"
+                                                        th:onclick="|deleteUser('${user.getId()}')|">
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -85,7 +91,16 @@
         <footer th:replace="header :: footer"></footer>
     </div>
 </div>
-
+<script type="text/javascript">
+    function deleteUser(id) {
+        if (confirm('Вы уверены?')) {
+            document.getElementById(id).submit()
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
 <!-- DataTables  & Plugins -->
 <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
 <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>

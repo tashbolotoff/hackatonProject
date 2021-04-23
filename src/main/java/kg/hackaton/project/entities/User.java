@@ -1,5 +1,6 @@
 package kg.hackaton.project.entities;
 
+import kg.hackaton.project.enums.UserStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -50,5 +51,7 @@ public class User{
     @Column(name = "date_of_birth")
     Date dateOfBirth;
 
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "userStatus")
+    UserStatus userStatus;
 }

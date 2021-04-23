@@ -2,6 +2,7 @@ package kg.hackaton.project.configs;
 
 import kg.hackaton.project.entities.Permission;
 import kg.hackaton.project.entities.User;
+import kg.hackaton.project.enums.UserStatus;
 import kg.hackaton.project.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +26,7 @@ class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.getByUsername(username);
-        if (user == null) {
+        if (user == null || user.getUserStatus() == UserStatus.ДЕАКТИВИРОВАН) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
 

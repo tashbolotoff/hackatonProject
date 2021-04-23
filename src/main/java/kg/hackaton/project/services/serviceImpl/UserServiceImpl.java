@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
                     .email(userModel.getEmail() != null ? userModel.getEmail() : null)
                     .phone(userModel.getPhone() != null ? userModel.getPhone() : null)
                     .dateOfBirth(userModel.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").parse(userModel.getDateOfBirth()) : null)
-                    .userStatus(UserStatus.АКТИВИРОВАН)
+                    .userStatus(UserStatus.Активирован)
                     .build();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public User changeUserStatus(Long userId) {
         return userRepo.findById(userId)
                 .map(newUser -> {
-                    newUser.setUserStatus(userRepo.getOne(userId).getUserStatus() == UserStatus.АКТИВИРОВАН ? UserStatus.ДЕАКТИВИРОВАН : UserStatus.АКТИВИРОВАН);
+                    newUser.setUserStatus(userRepo.getOne(userId).getUserStatus() == UserStatus.Активирован ? UserStatus.Деактивирован : UserStatus.Активирован);
                     return userRepo.save(newUser);
                 }).
                         orElseThrow(() ->

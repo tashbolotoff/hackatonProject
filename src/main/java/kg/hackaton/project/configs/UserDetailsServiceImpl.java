@@ -26,7 +26,7 @@ class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.getByUsername(username);
-        if (user == null || user.getUserStatus() == UserStatus.ДЕАКТИВИРОВАН) {
+        if (user == null || user.getUserStatus() == UserStatus.Деактивирован) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
 

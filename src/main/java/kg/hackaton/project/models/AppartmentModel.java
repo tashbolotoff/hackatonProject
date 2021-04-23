@@ -5,6 +5,7 @@ import kg.hackaton.project.entities.Rayon;
 import kg.hackaton.project.enums.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -39,4 +40,8 @@ public class AppartmentModel {
     String typeOfSale;
 
     String busyOrFreeStatus;
+
+    Double latitude;
+
+    Double longitude;
 }

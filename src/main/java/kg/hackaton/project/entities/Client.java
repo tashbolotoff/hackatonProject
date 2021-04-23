@@ -48,4 +48,8 @@ public class Client extends Audit<String> {
     @ManyToOne
     @JoinColumn(name = "appartment_id")
     Appartment appartment;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    User user;
 }

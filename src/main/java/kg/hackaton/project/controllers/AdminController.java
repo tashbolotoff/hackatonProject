@@ -332,12 +332,6 @@ public class AdminController {
         currentUser = userService.getUserByUsername(userDetails.getUsername());
     }
 
-    //    @PreAuthorize("isAuthenticated() and hasPermission('USER_CREATE', 'SUPER_ADMIN')")
-//    @PostMapping(value = "/user/add")
-//    public String addEmployee(@ModelAttribute("UserModel") UserModel userModel) {
-//        employeeService.create(employeeModel);
-//        return "redirect:/admin/user/list";
-//    }
     @PreAuthorize("isAuthenticated() and hasPermission('USER_UPDATE', 'SUPER_ADMIN')")
     @PostMapping(value = "/user/update")
     public String editUser(@ModelAttribute("user") UserModel userModel) {

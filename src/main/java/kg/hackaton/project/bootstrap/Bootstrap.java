@@ -239,6 +239,20 @@ public class Bootstrap implements CommandLineRunner {
                 .build();
         permissionRepo.save(permissionAppartmentUpdate);
 
+        //for MAP
+        PermissionCategory permissionCategoryMap = PermissionCategory.builder()
+                .name("Map")
+                .nameRu("Карта")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryMap);
+
+        Permission permissionMapRead = Permission.builder()
+                .name("MAP_READ")
+                .nameRu("Просмотр карты")
+                .permissionCategory(permissionCategoryMap)
+                .build();
+        permissionRepo.save(permissionMapRead);
+
         // ROLES
         UserRole userRoleAdmin = UserRole.builder()
                 .name("ROLE_ADMIN")
@@ -271,9 +285,7 @@ public class Bootstrap implements CommandLineRunner {
                 .name("ROLE_CLIENT")
                 .build();
         ArrayList<Permission> permissionArrayListClient = new ArrayList<>();
-        permissionArrayListClient.add(permissionClientRead);
-        permissionArrayListClient.add(permissionClientCreate);
-        permissionArrayListClient.add(permissionClientUpdate);
+        permissionArrayListClient.add(permissionMapRead);
         if (userRoleClient.getPermissions() != null) {
             permissionArrayListClient.addAll(userRoleClient.getPermissions());
         }

@@ -1,12 +1,17 @@
 package kg.hackaton.project.services.serviceImpl;
 
 import kg.hackaton.project.entities.Client;
+import kg.hackaton.project.entities.User;
 import kg.hackaton.project.exceptions.RecordNotFoundException;
 import kg.hackaton.project.models.ClientModel;
 import kg.hackaton.project.repositories.AppartmentRepo;
 import kg.hackaton.project.repositories.ClientRepo;
+import kg.hackaton.project.repositories.UserRepo;
+import kg.hackaton.project.repositories.UserRoleRepo;
 import kg.hackaton.project.services.ClientService;
+import kg.hackaton.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -21,6 +26,18 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientRepo clientRepo;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRoleRepo userRoleRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Override
     public Client create(ClientModel clientModel) {
@@ -37,6 +54,14 @@ public class ClientServiceImpl implements ClientService {
                     .dateOfBirth(clientModel.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").parse(clientModel.getDateOfBirth()) : null)
 //                    .appartment(appartmentRepo.getOne(clientModel.getAppartmentId()))
                     .build();
+            if (clientModel.getUserModel() != null) {
+                User user = User.builder()
+                        .username(clientModel.getUserModel().getUsername())
+                        .password(passwordEncoder.encode(clientModel.getUserModel().getPassword()))
+                        .userRole(userRoleRepo.getUserRoleByName("ROLE_CLIENT"))
+                        .build();
+                client.setUser(userRepo.save(user));
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

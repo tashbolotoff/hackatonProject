@@ -31,4 +31,6 @@ public class ClientModel {
     String dateOfBirth;
 
     Long appartmentId;
+
+    UserModel userModel;
 }

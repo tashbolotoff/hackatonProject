@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "hack_client")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Client extends Audit<String> {
+public class Client {
 
     @Id
     @GeneratedValue
@@ -45,9 +45,6 @@ public class Client extends Audit<String> {
 
     @Column(name = "date_of_birth")
     Date dateOfBirth;
-
-//    @OneToMany(mappedBy = "appartments", cascade = CascadeType.ALL, orphanRemoval = true)
-//    List<Appartment> appartments;
 
     @OneToOne
     @JoinColumn(name = "user_id")

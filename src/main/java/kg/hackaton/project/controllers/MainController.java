@@ -49,6 +49,8 @@ public class MainController {
         if (request.isUserInRole("ROLE_ADMIN")) {
             return "redirect:/admin/user/list";
         } else if(request.isUserInRole("ROLE_MANAGER")){
+            return "redirect:/admin/appartment/list";
+        } else if (request.isUserInRole("ROLE_CLIENT")) {
             return "redirect:/";
         }
         return "redirect:/";

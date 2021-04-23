@@ -42,9 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/js/**",
                         "/libs/**",
                         "/logos/*",
-                        "/plugins/****")
+                        "/plugins/****",
+                        "/client/registration")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/admin/index").permitAll()
+                .antMatchers(HttpMethod.POST, "/client/registration").permitAll()
                 .antMatchers(HttpMethod.GET, "/main").permitAll()
                 .anyRequest().authenticated()
                 .and()

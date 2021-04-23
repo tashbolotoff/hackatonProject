@@ -2,7 +2,9 @@ package kg.hackaton.project.controllers;
 
 import kg.hackaton.project.entities.User;
 import kg.hackaton.project.entities.User;
+import kg.hackaton.project.models.ClientModel;
 import kg.hackaton.project.models.ManufacturerModel;
+import kg.hackaton.project.models.SerieModel;
 import kg.hackaton.project.services.*;
 import kg.hackaton.project.models.UserModel;
 import kg.hackaton.project.services.UserRoleService;
@@ -39,6 +41,12 @@ public class AdminController {
 
     @Autowired
     private ManufacturerService manufacturerService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private SerieService serieService;
 
     private User currentUser;
 
@@ -134,6 +142,83 @@ public class AdminController {
     public String createManufacturer(@Validated @ModelAttribute("rayon") ManufacturerModel manufacturerModel) {
         manufacturerService.create(manufacturerModel);
         return "redirect:/admin/manufacturer/list";
+    }
+
+    //CLIENTS
+    @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_READ', 'SUPER_ADMIN')")
+    @GetMapping("/client/list")
+    public String getClientsList(Model model) {
+        model.addAttribute("clients", clientService.findAll());
+        getCurrentUser();
+        model.addAttribute("username", currentUser.getName());
+        model.addAttribute("surname", currentUser.getSurname());
+        return "clients/client_list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_UPDATE', 'SUPER_ADMIN')")
+    @GetMapping("/client/{id}")
+    public String clientEditForm(@PathVariable("id") Long clientId, Model model) {
+        model.addAttribute("client", clientService.getById(clientId));
+        getCurrentUser();
+        model.addAttribute("username", currentUser.getName());
+        model.addAttribute("surname", currentUser.getSurname());
+        return "clients/client_form";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_CREATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/worldorgs/add")
+    public String addClient(@Validated @ModelAttribute("client") ClientModel clientModel) {
+        clientService.create(clientModel);
+        return "redirect:/admin/client/list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_UPDATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/client/update")
+    public String updateClient(@Validated @ModelAttribute("client") ClientModel clientModel) {
+        clientService.update(clientModel);
+        return "redirect:/admin/client/list";
+    }
+
+    //SERIES
+    @PreAuthorize("isAuthenticated() and hasPermission('SERIE_READ', 'SUPER_ADMIN')")
+    @GetMapping("/serie/list")
+    public String getSerieList(Model model) {
+        model.addAttribute("series", serieService.findAll());
+        getCurrentUser();
+        model.addAttribute("username", currentUser.getName());
+        model.addAttribute("surname", currentUser.getSurname());
+        return "series/serie_list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('SERIE_UPDATE', 'SUPER_ADMIN')")
+    @GetMapping("/serie/{id}")
+    public String serieEditForm(@PathVariable("id") Long serieId, Model model) {
+        model.addAttribute("serie", serieService.getById(serieId));
+        getCurrentUser();
+        model.addAttribute("username", currentUser.getName());
+        model.addAttribute("surname", currentUser.getSurname());
+        return "series/serie_form";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('SERIE_CREATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/serie/add")
+    public String addSerie(@Validated @ModelAttribute("serie") SerieModel serieModel) {
+        serieService.create(serieModel);
+        return "redirect:/admin/serie/list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('SERIE_UPDATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/serie/update")
+    public String updateSerie(@Validated @ModelAttribute("serie") SerieModel serieModel) {
+        serieService.update(serieModel);
+        return "redirect:/admin/serie/list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('SERIE_UPDATE', 'SUPER_ADMIN')")
+    @GetMapping(value = "/serie/delete/{id}")
+    public String deleteSerie(@PathVariable("id") Long id) {
+        serieService.delete(id);
+        return "redirect:/admin/serie/list";
     }
 
     public void setUserCredentials(Model model){

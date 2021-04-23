@@ -19,7 +19,7 @@ public class AdminController {
     public String getAllUsers(Model model) {
         model.addAttribute("title", "Список пользователей");
         model.addAttribute("users", userService.findAll());
-        return "notifications/user-list";
+        return "users/user-list";
     }
 
     @PreAuthorize("isAuthenticated() and hasPermission('NOTIFICATION_READ', 'SUPER_ADMIN')")

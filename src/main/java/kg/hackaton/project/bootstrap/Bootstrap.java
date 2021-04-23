@@ -80,6 +80,18 @@ public class Bootstrap implements CommandLineRunner {
                 .build();
         permissionRepo.save(permissionUserRead);
 
+        PermissionCategory permissionCategoryOblasts = PermissionCategory.builder()
+                .name("Oblasts")
+                .nameRu("Области")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryOblasts);
+
+        Permission permissionOblastsRead = Permission.builder()
+                .name("OBLAST_READ")
+                .nameRu("Просмотр областей")
+                .permissionCategory(permissionCategoryOblasts)
+                .build();
+        permissionRepo.save(permissionOblastsRead);
 
         PermissionCategory permissionCategoryRayon = PermissionCategory.builder()
                 .name("Rayons")
@@ -107,6 +119,90 @@ public class Bootstrap implements CommandLineRunner {
                 .permissionCategory(permissionCategoryRayon)
                 .build();
         permissionRepo.save(permissionRayonUpdate);
+
+
+        PermissionCategory permissionCategoryManufacturer = PermissionCategory.builder()
+                .name("Manufacturer")
+                .nameRu("Жилые комплексы")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryManufacturer);
+
+        Permission permissionManufacturerCreate = Permission.builder()
+                .name("MANUFACTURER_CREATE")
+                .nameRu("Добавление жилого комплекса")
+                .permissionCategory(permissionCategoryManufacturer)
+                .build();
+        permissionRepo.save(permissionManufacturerCreate);
+
+        Permission permissionManufacturerRead = Permission.builder()
+                .name("MANUFACTURER_READ")
+                .nameRu("Просмотр жилых комплексов")
+                .permissionCategory(permissionCategoryManufacturer)
+                .build();
+        permissionRepo.save(permissionManufacturerRead);
+
+        Permission permissionManufacturerUpdate = Permission.builder()
+                .name("MANUFACTURER_UPDATE")
+                .nameRu("Изменение жилых комплексов")
+                .permissionCategory(permissionCategoryManufacturer)
+                .build();
+        permissionRepo.save(permissionManufacturerUpdate);
+
+
+        PermissionCategory permissionCategoryClient = PermissionCategory.builder()
+                .name("Clients")
+                .nameRu("Клиенты")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryClient);
+
+        Permission permissionClientCreate = Permission.builder()
+                .name("CLIENT_CREATE")
+                .nameRu("Добавление клиентов")
+                .permissionCategory(permissionCategoryClient)
+                .build();
+        permissionRepo.save(permissionClientCreate);
+
+        Permission permissionClientRead = Permission.builder()
+                .name("CLIENT_READ")
+                .nameRu("Просмотр клиентов")
+                .permissionCategory(permissionCategoryClient)
+                .build();
+        permissionRepo.save(permissionClientRead);
+
+        Permission permissionClientUpdate = Permission.builder()
+                .name("CLIENT_UPDATE")
+                .nameRu("Изменение клиентов")
+                .permissionCategory(permissionCategoryClient)
+                .build();
+        permissionRepo.save(permissionClientUpdate);
+
+
+        PermissionCategory permissionCategorySerie = PermissionCategory.builder()
+                .name("Series")
+                .nameRu("Серии квартир")
+                .build();
+        permissionCategoryRepo.save(permissionCategorySerie);
+
+        Permission permissionSerieCreate = Permission.builder()
+                .name("SERIE_CREATE")
+                .nameRu("Добавление серий квартир")
+                .permissionCategory(permissionCategorySerie)
+                .build();
+        permissionRepo.save(permissionSerieCreate);
+
+        Permission permissionSerieRead = Permission.builder()
+                .name("SERIE_READ")
+                .nameRu("Просмотр серий квартир")
+                .permissionCategory(permissionCategorySerie)
+                .build();
+        permissionRepo.save(permissionSerieRead);
+
+        Permission permissionSerieUpdate = Permission.builder()
+                .name("SERIE_UPDATE")
+                .nameRu("Изменение серий квартир")
+                .permissionCategory(permissionCategorySerie)
+                .build();
+        permissionRepo.save(permissionSerieUpdate);
 
         // ROLES
         UserRole userRoleAdmin = UserRole.builder()

@@ -1,0 +1,4 @@
+package kg.hackaton.project.enums;
+
+public enum Condition {
+}

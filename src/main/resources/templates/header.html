@@ -168,6 +168,10 @@
                                            class="dropdown-item" href="/admin/serie/list">
                                             Серии
                                         </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('APPARTMENT_READ')"
+                                           class="dropdown-item" href="/admin/appartment/list">
+                                            Квартиры/Дома
+                                        </a>
                                     </div>
 <!--                                    <div class="dropdown-menu-column">-->
 <!--

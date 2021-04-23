@@ -17,7 +17,7 @@
                     <div class="col">
                         <!-- Page pre-title -->
                         <div class="page-pretitle">
-                            Создание нового жилого комплекса
+                            Добавление новой квартиры/дома
                         </div>
                         <h2 class="page-title" th:text="${title}">
                         </h2>
@@ -25,7 +25,7 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
-                            <a href="/admin/manufacturer/list" class="btn btn-primary d-none d-sm-inline-block">
+                            <a href="/admin/appartment/list" class="btn btn-primary d-none d-sm-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -34,7 +34,7 @@
                                 </svg>
                                 Вернуться к списку
                             </a>
-                            <a href="/admin/manufacturer/list" class="btn btn-primary d-sm-none btn-icon" aria-label="Вернуться к списку">
+                            <a href="/admin/appartment/list" class="btn btn-primary d-sm-none btn-icon" aria-label="Вернуться к списку">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -53,23 +53,122 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Добавление нового жилого комплекса</h3>
+                                <h3 class="card-title">Добавление новой квартиры/дома</h3>
                             </div>
                             <div class="card-body">
-                                <form th:object="${manufacturer}" th:action="${manufacturer != null ?  '/admin/manufacturer/update' : '/admin/manufacturer/add'}" method="post">
+                                <form th:object="${appartment}" th:action="${appartment != null ?  '/admin/appartment/update' : '/admin/appartment/add'}" method="post">
+                                    <input  type="hidden" id="id" name="id"  class="form-control" th:value="${appartment != null ? appartment.getId() : ''}">
                                     <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Название</label>
+                                        <label class="form-label col-3 col-form-label">Район</label>
                                         <div class="col">
-                                            <input type="text" id="username" name="name" class="form-control" th:value="${manufacturer != null ? manufacturer.getName() : ''}">
-                                            <small class="form-hint text-danger"></small>
+                                            <select id="rayonId" name="rayonId" class="form-select">
+                                                <option th:each="rayon: ${rayons}" th:value="${rayon.getId()}"
+                                                        th:text="${rayon.getName()}"
+                                                        th:selected="${appartment != null ? appartment.getRayon().getId() == rayon.getId() : false}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Количество комнат</label>
+                                        <div class="col">
+                                            <input id="countOfRooms" th:value="${appartment != null ? appartment.getCountOfRooms() : ''}" name="countOfRooms" type="text" class="form-control" placeholder="Количество комнат">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Этаж</label>
+                                        <div class="col">
+                                            <input id="stage" th:value="${appartment != null ? appartment.getStage() : ''}" name="stage" type="text" class="form-control" placeholder="Этаж">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Цена</label>
+                                        <div class="col">
+                                            <input id="price" step="0.1" th:value="${appartment != null ? appartment.getPrice() : ''}" name="price" type="text" class="form-control" placeholder="Цена">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Адрес</label>
+                                        <div class="col">
+                                            <input id="address" th:value="${appartment != null ? appartment.getAddress() : ''}" name="address" type="text" class="form-control" placeholder="Адрес">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Жилой комплекс</label>
+                                        <div class="col">
+                                            <select id="manufacturerId" name="manufacturerId" class="form-select">
+                                                <option th:each="manufacturer: ${manufacturers}" th:value="${manufacturer.getId()}"
+                                                        th:text="${manufacturer.getName()}"
+                                                        th:selected="${appartment != null ? appartment.getManufacturer().getId() == manufacturer.getId() : false}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Серия</label>
+                                        <div class="col">
+                                            <select id="serieId" name="serieId" class="form-select">
+                                                <option th:each="serie: ${series}" th:value="${serie.getId()}"
+                                                        th:text="${serie.getName()}"
+                                                        th:selected="${appartment != null ? appartment.getSerie().getId() == serie.getId() : false}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Состояние</label>
+                                        <div class="col">
+                                            <select id="condition" name="condition" class="form-select">
+                                                <option th:each="condition: ${conditions}" th:value="${condition}"
+                                                        th:text="${condition.name()}"
+                                                        th:selected="${appartment != null ? appartment.getCondition().name() : false}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Тип недвижимости</label>
+                                        <div class="col">
+                                            <select id="typeOfHouse" name="typeOfHouse" class="form-select">
+                                                <option th:each="typeOfHouse: ${typesOfHouse}" th:value="${typeOfHouse}"
+                                                        th:text="${typeOfHouse.name()}"
+                                                        th:selected="${appartment != null ? appartment.getTypeOfHouse().name() : false}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Тип продажи</label>
+                                        <div class="col">
+                                            <select id="typeOfSale" name="typeOfSale" class="form-select">
+                                                <option th:each="typeOfSale: ${typesOfSale}" th:value="${typeOfSale}"
+                                                        th:text="${typeOfSale.name()}"
+                                                        th:selected="${appartment != null ? appartment.getTypeOfSale().name() : false}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Статус</label>
+                                        <div class="col">
+                                            <select id="busyOrFreeStatus" name="busyOrFreeStatus" class="form-select">
+                                                <option th:each="busyOrFree: ${busysOrFrees}" th:value="${busyOrFree}"
+                                                        th:text="${busyOrFree.name()}"
+                                                        th:selected="${appartment != null ? appartment.getBusyOrFreeStatus().name() : false}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Широта</label>
+                                        <div class="col">
+                                            <input id="latitude" th:value="${appartment != null ? appartment.getLatitude() : ''}" name="latitude" type="text" class="form-control" placeholder="Адрес">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Долгота</label>
+                                        <div class="col">
+                                            <input id="longitude" th:value="${appartment != null ? appartment.getLongitude() : ''}" name="longitude" type="text" class="form-control" placeholder="Адрес">
                                         </div>
                                     </div>
 
-                                    <input id="id" name="id"  type="hidden" class="form-control" th:value="${manufacturer != null ? manufacturer.getId() : ''}">
 
                                     <div class="form-footer">
                                         <button type="submit" class="btn btn-primary">
-                                            [[${manufacturer != null ? 'Изменить' : 'Создать'}]]
+                                            [[${appartment != null ? 'Изменить' : 'Создать'}]]
                                         </button>
                                     </div>
                                 </form>

@@ -25,9 +25,9 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
-                            <a href="/admin/manufacturer/add" class="btn btn-primary d-none d-sm-inline-block">
+                            <a href="/admin/appartment/add" class="btn btn-primary d-none d-sm-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                                Добавить жилой комплекс
+                                Добавить квартиру/дом
                             </a>
                             <a href="/admin/manufacturer/add" class="btn btn-primary d-sm-none btn-icon" aria-label="Создать нового жилого комплекса">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
@@ -47,18 +47,37 @@
                                 <table id="users_table" class="table table-bordered table-info card-table table-vcenter text-nowrap w-100 h-100">
                                     <thead>
                                     <tr>
-                                        <th>Название</th>
+                                        <th>Район</th>
+                                        <th>Количество комнат</th>
+                                        <th>Этаж</th>
+                                        <th>Цена</th>
+                                        <th>Адрес</th>
+                                        <th>Жилой комплекс</th>
+                                        <th>Серия</th>
+                                        <th>Состояние</th>
+                                        <th>Тип квартиры/дома</th>
+                                        <th>Тип продажи</th>
+                                        <th>Статус</th>
                                         <th>Действия</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="manufacturer : ${manufacturers}">
-                                        <td th:text="${manufacturer.getName()}"></td>
+                                    <tr th:each="appartment : ${appartments}">
+                                        <td th:text="${appartment.getRayon().getName()}"></td>
+                                        <td th:text="${appartment.getCountOfRooms()}"></td>
+                                        <td th:text="${appartment.getStage()}"></td>
+                                        <td th:text="${appartment.getPrice()}"></td>
+                                        <td th:text="${appartment.getAddress()}"></td>
+                                        <td th:text="${appartment.getManufacturer().getName()}"></td>
+                                        <td th:text="${appartment.getSerie().getName()}"></td>
+                                        <td th:text="${appartment.getCondition()}"></td>
+                                        <td th:text="${appartment.getTypeOfHouse()}"></td>
+                                        <td th:text="${appartment.getTypeOfSale()}"></td>
+                                        <td th:text="${appartment.getBusyOrFreeStatus()}"></td>
 
                                         <td class="text-center">
                                             <button class="btn btn-sm btn-primary">Подробнее</button>
-                                            <a th:href="'/admin/manufacturer/edit/' + ${manufacturer.getId()}" class="btn btn-sm btn-success">Изменить</a>
-                                            <button class="btn btn-sm btn-danger">Удалить</button>
+                                            <a th:href="'/admin/appartment/edit/' + ${appartment.getId()}" class="btn btn-sm btn-success">Изменить</a>
                                         </td>
                                     </tr>
                                     </tbody>

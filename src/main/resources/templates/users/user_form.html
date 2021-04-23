@@ -77,7 +77,7 @@
                                             <select id="userRoleId" name="userRoleId" class="form-select">
                                                 <option th:each="role: ${roles}" th:value="${role.getId()}"
                                                         th:text="${role.getName()}"
-                                                th:selected="${user != null ? user.getId() == role.getId() : false}"></option>
+                                                th:selected="${user != null ? user.getUserRole().getId() == role.getId() : false}"></option>
                                             </select>
                                         </div>
                                     </div>

@@ -211,6 +211,34 @@ public class Bootstrap implements CommandLineRunner {
                 .build();
         permissionRepo.save(permissionSerieUpdate);
 
+        //for Appartments
+        PermissionCategory permissionCategoryAppartment = PermissionCategory.builder()
+                .name("Appartments")
+                .nameRu("Квартиры/Дома")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryAppartment);
+
+        Permission permissionAppartmentCreate = Permission.builder()
+                .name("APPARTMENT_CREATE")
+                .nameRu("Добавление квартир/домов")
+                .permissionCategory(permissionCategoryAppartment)
+                .build();
+        permissionRepo.save(permissionAppartmentCreate);
+
+        Permission permissionAppartmentRead = Permission.builder()
+                .name("APPARTMENT_READ")
+                .nameRu("Просмотр квартир/домов")
+                .permissionCategory(permissionCategoryAppartment)
+                .build();
+        permissionRepo.save(permissionAppartmentRead);
+
+        Permission permissionAppartmentUpdate = Permission.builder()
+                .name("APPARTMENT_UPDATE")
+                .nameRu("Изменение квартир/домов")
+                .permissionCategory(permissionCategoryAppartment)
+                .build();
+        permissionRepo.save(permissionAppartmentUpdate);
+
         // ROLES
         UserRole userRoleAdmin = UserRole.builder()
                 .name("ROLE_ADMIN")
@@ -223,27 +251,42 @@ public class Bootstrap implements CommandLineRunner {
         userRoleAdmin.setPermissions(permissionArrayListAdmin);
         userRoleRepo.save(userRoleAdmin);
 
-        // ROLES
         UserRole userRoleManager = UserRole.builder()
                 .name("ROLE_MANAGER")
                 .build();
-        ArrayList<Permission> permissionArrayList = new ArrayList<>();
-        permissionArrayList.add(permissionClientRead);
-        permissionArrayList.add(permissionClientCreate);
-        permissionArrayList.add(permissionClientUpdate);
+        ArrayList<Permission> permissionArrayListManager = new ArrayList<>();
+        permissionArrayListManager.add(permissionClientRead);
+        permissionArrayListManager.add(permissionClientCreate);
+        permissionArrayListManager.add(permissionClientUpdate);
+        permissionArrayListManager.add(permissionAppartmentCreate);
+        permissionArrayListManager.add(permissionAppartmentRead);
+        permissionArrayListManager.add(permissionAppartmentUpdate);
         if (userRoleManager.getPermissions() != null) {
-            permissionArrayList.addAll(userRoleManager.getPermissions());
+            permissionArrayListManager.addAll(userRoleManager.getPermissions());
         }
-        userRoleManager.setPermissions(permissionArrayList);
+        userRoleManager.setPermissions(permissionArrayListManager);
         userRoleRepo.save(userRoleManager);
+
+        UserRole userRoleClient = UserRole.builder()
+                .name("ROLE_CLIENT")
+                .build();
+        ArrayList<Permission> permissionArrayListClient = new ArrayList<>();
+        permissionArrayListClient.add(permissionClientRead);
+        permissionArrayListClient.add(permissionClientCreate);
+        permissionArrayListClient.add(permissionClientUpdate);
+        if (userRoleClient.getPermissions() != null) {
+            permissionArrayListClient.addAll(userRoleClient.getPermissions());
+        }
+        userRoleClient.setPermissions(permissionArrayListClient);
+        userRoleRepo.save(userRoleClient);
 
         // USERS
         User admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
                 .userStatus(UserStatus.АКТИВИРОВАН)
-                .name("Бакай")
-                .surname("Кыдырбек уулу")
+                .name("Администратор")
+                .surname("Администратор")
                 .phone("0773508744")
                 .email("bakaiks312@gmail.com")
                 .dateOfBirth(new Date())

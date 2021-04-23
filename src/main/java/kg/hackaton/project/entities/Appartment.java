@@ -3,6 +3,8 @@ package kg.hackaton.project.entities;
 import kg.hackaton.project.enums.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
@@ -72,6 +74,7 @@ public class Appartment extends Audit<String>{
     Double longitude;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "imgPaths",
             joinColumns = @JoinColumn(name = "appartment_id"),
             inverseJoinColumns = @JoinColumn(name = "img_path_id"))

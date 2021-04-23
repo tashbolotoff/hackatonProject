@@ -172,6 +172,10 @@
                                            class="dropdown-item" href="/admin/appartment/list">
                                             Квартиры/Дома
                                         </a>
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('CONTRACT_READ')"
+                                           class="dropdown-item" href="/admin/charts">
+                                            Договора
+                                        </a>
                                         <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('APPARTMENT_READ')"
                                            class="dropdown-item" href="/admin/charts">
                                             Диаграммы/Чарты

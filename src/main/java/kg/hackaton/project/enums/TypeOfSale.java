@@ -1,5 +1,5 @@
 package kg.hackaton.project.enums;
 
 public enum TypeOfSale {
-    Аренда, Продажа, Лизинг
+    Аренда, Продажа, Лизинг, Продано, Арендовано
 }

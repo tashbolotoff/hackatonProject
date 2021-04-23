@@ -38,6 +38,9 @@ public class Bootstrap implements CommandLineRunner {
     private SerieRepo serieRepo;
 
     @Autowired
+    private ClientRepo clientRepo;
+
+    @Autowired
     private PermissionRepo permissionRepo;
 
     @Autowired
@@ -211,6 +214,28 @@ public class Bootstrap implements CommandLineRunner {
                 .build();
         permissionRepo.save(permissionSerieUpdate);
 
+
+        PermissionCategory permissionCategoryContract = PermissionCategory.builder()
+                .name("Contracts")
+                .nameRu("Договора")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryContract);
+
+        Permission permissionContractCreate = Permission.builder()
+                .name("CONTRACT_CREATE")
+                .nameRu("Добавление договоров")
+                .permissionCategory(permissionCategoryContract)
+                .build();
+        permissionRepo.save(permissionContractCreate);
+
+        Permission permissionContractRead = Permission.builder()
+                .name("CONTRACT_READ")
+                .nameRu("Просмотр договоров")
+                .permissionCategory(permissionCategoryContract)
+                .build();
+        permissionRepo.save(permissionContractRead);
+
+
         //for Appartments
         PermissionCategory permissionCategoryAppartment = PermissionCategory.builder()
                 .name("Appartments")
@@ -319,6 +344,24 @@ public class Bootstrap implements CommandLineRunner {
                 .userRole(userRoleManager)
                 .build();
         userRepo.save(manager);
+        UserRole userRole = UserRole.builder().name("ROLE_CLIENT").build();
+        userRoleRepo.save(userRole);
+        User client = User.builder()
+                .username("client")
+                .password("client")
+                .userStatus(UserStatus.Активирован)
+                .userRole(userRole)
+                .build();
+        userRepo.save(client);
+
+        Client client1 = Client.builder()
+                .name("Улук")
+                .surname("Капарбеков")
+                .middlename("Давлетович")
+                .pin("21408199901306")
+                .user(client)
+                .build();
+        clientRepo.save(client1);
 
         // OBLASTS
         Oblast bishkek = Oblast.builder()

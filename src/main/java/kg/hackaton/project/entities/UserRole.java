@@ -2,6 +2,8 @@ package kg.hackaton.project.entities;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -24,6 +26,7 @@ public class UserRole{
     String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "permission_role",
             joinColumns = @JoinColumn(name = "user_role_id"),

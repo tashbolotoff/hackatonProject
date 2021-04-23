@@ -1,0 +1,146 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head th:replace="header :: head">
+    <meta charset="utf-8">
+</head>
+
+<body class="antialiased">
+<div class="wrapper">
+    <div th:replace="header :: header"></div>
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            Cписок договоров
+                        </div>
+                        <h2 class="page-title" th:text="${title}">
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="row row-cards">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body border-bottom py-3">
+                                <div class="table-responsive">
+                                <table id="users_table" class="table table-bordered table-info card-table table-vcenter text-nowrap w-100 h-100">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Тип объекта</th>
+                                        <th>Статус объекта</th>
+                                        <th>Адрес</th>
+                                        <th>Цена</th>
+                                        <th>ФИО клиента</th>
+                                        <th>Дата начала аренды</th>
+                                        <th>Дата конца аренды</th>
+                                        <th>Дата продажи</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="item : ${list}">
+                                        <td th:text="${item.getId()}"></td>
+                                        <td th:text="${item.getAppartment() != null ? item.getAppartment().getTypeOfHouse().valueOf(item.getAppartment().getTypeOfHouse()) : ''}"></td>
+                                        <td th:text="${item.getAppartment() != null ? item.getAppartment().getTypeOfSale().valueOf(item.getAppartment().getTypeOfSale()) : ''}"></td>
+                                        <td th:text="${item.getAppartment() != null ? item.getAppartment().getAddress() : ''}"></td>
+                                        <td th:text="${item.getAppartment() != null ? item.getAppartment().getPrice() : ''}"></td>
+                                        <td th:text="${item.getAppartment() != null ? item.getClient().getName() + ' ' + item.getClient().getSurname(): ''}"></td>
+                                        <td th:text="${#dates.format(item.getDateOfStart(), 'yyyy-MM-dd')}"></td>
+                                        <td th:text="${#dates.format(item.getDateOfEnd(), 'yyyy-MM-dd')}"></td>
+                                        <td th:text="${#dates.format(item.getDateOfSell(), 'yyyy-MM-dd')}"></td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="header :: footer"></footer>
+    </div>
+</div>
+<script type="text/javascript">
+    function deleteUser(id) {
+        if (confirm('Вы уверены?')) {
+            document.getElementById(id).submit()
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+<!-- DataTables  & Plugins -->
+<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+<script th:src="@{/plugins/jszip/jszip.min.js}"></script>
+<script th:src="@{/plugins/pdfmake/pdfmake.min.js}"></script>
+<script th:src="@{/plugins/pdfmake/vfs_fonts.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $("#users_table").DataTable({
+            "scrollX": true,
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ записей",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка записей...",
+                "zeroRecords": "Записи отсутствуют.",
+                "emptyTable": "В таблице отсутствуют данные",
+                "paginate":
+                    {
+                        "first": "Первая",
+                        "previous": "Предыдущая",
+                        "next": "Следующая",
+                        "last": "Последняя"
+                    },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                },
+                "select": {
+                    "rows": {
+                        "_": "Выбрано записей: %d",
+                        "0": "Кликните по записи для выбора",
+                        "1": "Выбрана одна запись"
+                    }
+                },
+                "buttons":
+                    {
+                        "print": "Печать",
+                        "colvis": "Видимость столбцов"
+                    }
+            },
+            columnDefs : [
+                { 'visible': false, 'targets': [ ] }
+            ],
+            "buttons": ["csv", "excel", "print", "colvis"]
+        }).buttons().container().appendTo('#users_table_wrapper .col-md-6:eq(0)');
+    });
+</script>
+
+</body>
+</html>

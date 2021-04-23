@@ -5,8 +5,12 @@ import kg.hackaton.project.models.AppartmentModel;
 import kg.hackaton.project.models.ClientModel;
 import kg.hackaton.project.models.ManufacturerModel;
 import kg.hackaton.project.models.SerieModel;
+import kg.hackaton.project.entities.Permission;
+import kg.hackaton.project.entities.PermissionCategory;
+import kg.hackaton.project.entities.User;
+import kg.hackaton.project.models.*;
+import kg.hackaton.project.repositories.PermissionCategoryRepo;
 import kg.hackaton.project.services.*;
-import kg.hackaton.project.models.UserModel;
 import kg.hackaton.project.services.UserRoleService;
 import kg.hackaton.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -34,6 +40,12 @@ public class AdminController {
 
     @Autowired
     private RayonService rayonService;
+
+    @Autowired
+    private PermissionService permissionService;
+
+    @Autowired
+    private PermissionCategoryRepo permissionCategoryRepo;
 
     @Autowired
     private AppartmentService appartmentService;
@@ -70,14 +82,15 @@ public class AdminController {
 
     @PreAuthorize("isAuthenticated() and hasPermission('USER_CREATE', 'SUPER_ADMIN')")
     @PostMapping(value = "/user/add")
-    public String addEmployee(@ModelAttribute("UserModel") UserModel userModel) {
+    public String addUser(@ModelAttribute("UserModel") UserModel userModel) {
         userService.create(userModel);
         return "redirect:/admin/user/list";
     }
 
     @PreAuthorize("isAuthenticated() and hasPermission('USER_READ', 'SUPER_ADMIN')")
     @GetMapping("/user/{id}")
-    public String getUserEditForm(@PathVariable("id") Long userId, Model model) {
+    public String getUserEditForm(@PathVariable("id") Long userId, Model model){
+        setUserCredentials(model);
         User user = userService.getById(userId);
         model.addAttribute("title", "Редактирование пользователя");
         model.addAttribute("roles", userRoleService.getAllUserRoles());
@@ -89,6 +102,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated() and hasPermission('OBLAST_READ', 'SUPER_ADMIN')")
     @GetMapping("/oblast/list")
     public String getOblastList(Model model) {
+        setUserCredentials(model);
         model.addAttribute("title", "Список областей");
         model.addAttribute("oblasts", oblastService.findAll());
         return "oblasts/oblast_list";
@@ -100,10 +114,12 @@ public class AdminController {
         return "redirect:/admin/user/list";
     }
 
+
     //RAYON
     @PreAuthorize("isAuthenticated() and hasPermission('RAYON_READ', 'SUPER_ADMIN')")
     @GetMapping("/rayon/list")
-    public String getrayonList(Model model) {
+    public String getrayonList(Model model){
+        setUserCredentials(model);
         model.addAttribute("title", "Список районов");
         model.addAttribute("rayons", rayonService.findAll());
         return "rayons/rayon_list";
@@ -195,6 +211,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_READ', 'SUPER_ADMIN')")
     @GetMapping("/client/list")
     public String getClientsList(Model model) {
+        setUserCredentials(model);
         model.addAttribute("clients", clientService.findAll());
         getCurrentUser();
         model.addAttribute("username", currentUser.getName());
@@ -205,6 +222,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_UPDATE', 'SUPER_ADMIN')")
     @GetMapping("/client/{id}")
     public String clientEditForm(@PathVariable("id") Long clientId, Model model) {
+        setUserCredentials(model);
         model.addAttribute("client", clientService.getById(clientId));
         getCurrentUser();
         model.addAttribute("username", currentUser.getName());
@@ -230,6 +248,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated() and hasPermission('SERIE_READ', 'SUPER_ADMIN')")
     @GetMapping("/serie/list")
     public String getSerieList(Model model) {
+        setUserCredentials(model);
         model.addAttribute("series", serieService.findAll());
         getCurrentUser();
         model.addAttribute("username", currentUser.getName());
@@ -240,6 +259,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated() and hasPermission('SERIE_UPDATE', 'SUPER_ADMIN')")
     @GetMapping("/serie/{id}")
     public String serieEditForm(@PathVariable("id") Long serieId, Model model) {
+        setUserCredentials(model);
         model.addAttribute("serie", serieService.getById(serieId));
         getCurrentUser();
         model.addAttribute("username", currentUser.getName());
@@ -268,7 +288,38 @@ public class AdminController {
         return "redirect:/admin/serie/list";
     }
 
-    public void setUserCredentials(Model model) {
+
+    @PreAuthorize("isAuthenticated() and hasPermission('SUPER_ADMIN')")
+    @PostMapping("/userRole/permission/add")
+    public String updatePermissions(@ModelAttribute("PermissionModel") PermissionModel permissionModel){
+        permissionService.grantSelectedPrivileges(permissionModel);
+        return "redirect:/admin/userRole/permissions";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('SUPER_ADMIN')")
+    @GetMapping("/userRole/permissions")
+    public String getPermissionList(Model model){
+        setUserCredentials(model);
+        model.addAttribute("roles", userRoleService.getAllUserRoles());
+        ArrayList<PermissionBoolModel> permissionBoolModels = new ArrayList<>();
+        for(PermissionCategory permissionCategory : permissionCategoryRepo.findAll()){
+            for(Permission permission : permissionCategory.getPermissions()) {
+                PermissionBoolModel permissionBoolModel = new PermissionBoolModel();
+                permissionBoolModel.setPermissionBool(false);
+                permissionBoolModel.setPermId(permission.getId());
+                permissionBoolModels.add(permissionBoolModel);
+            }
+        }
+        PermissionModel permissionModel = new PermissionModel();
+        permissionModel.setPermissionBools(permissionBoolModels);
+
+        model.addAttribute("permissionModel", permissionModel);
+        model.addAttribute("counter", new Counter());
+        model.addAttribute("permissionCategories", permissionCategoryRepo.findAll());
+        return "permissions/permissionEditList";
+    }
+
+    public void setUserCredentials(Model model){
         getCurrentUser();
         Long id = currentUser.getId();
         model.addAttribute("name", userService.getById(id) != null ? userService.getById(id).getName() : "Имя");
@@ -281,12 +332,6 @@ public class AdminController {
         currentUser = userService.getUserByUsername(userDetails.getUsername());
     }
 
-    //    @PreAuthorize("isAuthenticated() and hasPermission('USER_CREATE', 'SUPER_ADMIN')")
-//    @PostMapping(value = "/user/add")
-//    public String addEmployee(@ModelAttribute("UserModel") UserModel userModel) {
-//        employeeService.create(employeeModel);
-//        return "redirect:/admin/user/list";
-//    }
     @PreAuthorize("isAuthenticated() and hasPermission('USER_UPDATE', 'SUPER_ADMIN')")
     @PostMapping(value = "/user/update")
     public String editUser(@ModelAttribute("user") UserModel userModel) {

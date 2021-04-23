@@ -42,8 +42,8 @@ public class Appartment extends Audit<String>{
     @JoinColumn(name = "manufacturer_id")
     Manufacturer manufacturer;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "serie")
+    @ManyToOne
+    @JoinColumn(name = "serie_id")
     Serie serie;
 
     @Enumerated(EnumType.STRING)

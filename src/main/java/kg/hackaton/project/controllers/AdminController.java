@@ -1,6 +1,7 @@
 package kg.hackaton.project.controllers;
 
 import kg.hackaton.project.entities.User;
+import kg.hackaton.project.entities.User;
 import kg.hackaton.project.models.ManufacturerModel;
 import kg.hackaton.project.services.*;
 import kg.hackaton.project.models.UserModel;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -56,6 +58,23 @@ public class AdminController {
     public String getUserAddForm(Model model){
         model.addAttribute("title", "Добавление нового пользователя");
         model.addAttribute("roles", userRoleService.getAllUserRoles());
+        return "users/user_form";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('USER_CREATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/user/add")
+    public String addEmployee(@ModelAttribute("UserModel") UserModel userModel) {
+        userService.create(userModel);
+        return "redirect:/admin/user/list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('USER_READ', 'SUPER_ADMIN')")
+    @GetMapping("/user/{id}")
+    public String getUserEditForm(@PathVariable("id") Long userId, Model model){
+        User user = userService.getById(userId);
+        model.addAttribute("title", "Редактирование пользователя");
+        model.addAttribute("roles", userRoleService.getAllUserRoles());
+        model.addAttribute("user", user);
         return "users/user_edit_form";
     }
 
@@ -136,4 +155,11 @@ public class AdminController {
 //        employeeService.create(employeeModel);
 //        return "redirect:/admin/user/list";
 //    }
+    @PreAuthorize("isAuthenticated() and hasPermission('USER_UPDATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/user/update")
+    public String editUser(@ModelAttribute("user") UserModel userModel) {
+        System.out.println(userModel.getUserRoleId());
+        userService.update(userModel);
+        return "redirect:/admin/user/list";
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Component
@@ -34,16 +35,89 @@ public class Bootstrap implements CommandLineRunner {
     @Autowired
     private SerieRepo serieRepo;
 
+    @Autowired
+    private PermissionRepo permissionRepo;
+
+    @Autowired
+    private PermissionCategoryRepo permissionCategoryRepo;
+
     @Value("${filespath}")
     private String filespath;
 
     @Override
     public void run(String... args) throws Exception {
+
+        Permission permissionAdmin = Permission.builder()
+                .name("SUPER_ADMIN")
+                .build();
+        permissionRepo.save(permissionAdmin);
+
+        PermissionCategory permissionCategoryUser = PermissionCategory.builder()
+                .name("Users")
+                .nameRu("Пользователи")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryUser);
+
+        Permission permissionUserCreate = Permission.builder()
+                .name("USER_CREATE")
+                .nameRu("Добавление пользователей")
+                .permissionCategory(permissionCategoryUser)
+                .build();
+        permissionRepo.save(permissionUserCreate);
+
+        Permission permissionUserUpdate = Permission.builder()
+                .name("USER_UPDATE")
+                .nameRu("Изменение пользователей")
+                .permissionCategory(permissionCategoryUser)
+                .build();
+        permissionRepo.save(permissionUserUpdate);
+
+        Permission permissionUserRead = Permission.builder()
+                .name("USER_READ")
+                .nameRu("Просмотр пользователей")
+                .permissionCategory(permissionCategoryUser)
+                .build();
+        permissionRepo.save(permissionUserRead);
+
+
+        PermissionCategory permissionCategoryRayon = PermissionCategory.builder()
+                .name("Rayons")
+                .nameRu("Районы")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryRayon);
+
+        Permission permissionRayonCreate = Permission.builder()
+                .name("RAYON_CREATE")
+                .nameRu("Добавление районов")
+                .permissionCategory(permissionCategoryRayon)
+                .build();
+        permissionRepo.save(permissionRayonCreate);
+
+        Permission permissionRayonRead = Permission.builder()
+                .name("RAYON_READ")
+                .nameRu("Просмотр районов")
+                .permissionCategory(permissionCategoryRayon)
+                .build();
+        permissionRepo.save(permissionRayonRead);
+
+        Permission permissionRayonUpdate = Permission.builder()
+                .name("RAYON_UPDATE")
+                .nameRu("Изменение рай  онов")
+                .permissionCategory(permissionCategoryRayon)
+                .build();
+        permissionRepo.save(permissionRayonUpdate);
+
         // ROLES
-        UserRole adminRole = UserRole.builder()
+        UserRole userRoleAdmin = UserRole.builder()
                 .name("ROLE_ADMIN")
                 .build();
-        userRoleRepo.save(adminRole);
+        ArrayList<Permission> permissionArrayList = new ArrayList<>();
+        permissionArrayList.add(permissionAdmin);
+        userRoleAdmin.setPermissions(permissionArrayList);
+        if (userRoleAdmin.getPermissions() != null) {
+            permissionArrayList.addAll(userRoleAdmin.getPermissions());
+        }
+        userRoleRepo.save(userRoleAdmin);
 
         // USERS
         User admin = User.builder()
@@ -54,7 +128,7 @@ public class Bootstrap implements CommandLineRunner {
                 .phone("0773508744")
                 .email("bakaiks312@gmail.com")
                 .dateOfBirth(new Date())
-                .userRole(adminRole)
+                .userRole(userRoleAdmin)
                 .build();
         userRepo.save(admin);
 

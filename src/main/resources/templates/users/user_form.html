@@ -104,25 +104,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Область</label>
-                                        <div class="col">
-                                            <select class="form-select" id="oblast_field">
-                                                <option th:each="oblast: ${oblasts}" th:value="${oblast.getId()}"
-                                                        th:text="${oblast.getName()}"
-                                                        th:selected="${user != null && user.getOrganization() != null ? user.getOrganization().getRayon().getOblast()==oblast.getId() : ''}">
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Организация</label>
-                                        <div class="col">
-                                            <select id="organization" name="organizationId"  class="form-select">
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Номер телефона</label>
                                         <div class="col">
                                             <input id="phone" name="phone"  type="text" class="form-control" th:value="${user != null ? user.getPhone() : ''}">
@@ -136,19 +117,8 @@
                                             <small class="form-hint text-danger"></small>
                                         </div>
                                     </div>
-                                    <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Должность</label>
-                                        <div class="col">
-                                            <select id="position" name="positionId" class="form-select">
-                                                <option th:each="position: ${positions}" th:value="${position.getId()}"
-                                                        th:text="${position.getName()}"
-                                                        th:selected="${user != null && user.getPosition() != null ? user.getPosition()==position.getId() : ''}">
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <input id="id" name="id"  type="hidden" class="form-control" th:value="${user != null ? user.getId() : ''}">
-                                    <input id="userModel.id" name="userModel.id"  type="hidden" class="form-control" th:value="${user != null ? user.getUser().getId() : ''}">
 
                                     <div class="form-footer">
                                         <button type="submit" class="btn btn-primary">

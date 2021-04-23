@@ -7,6 +7,7 @@ import kg.hackaton.project.models.AppartmentModel;
 import kg.hackaton.project.repositories.AppartmentRepo;
 import kg.hackaton.project.repositories.ManufacturerRepo;
 import kg.hackaton.project.repositories.RayonRepo;
+import kg.hackaton.project.repositories.SerieRepo;
 import kg.hackaton.project.services.AppartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class AppartmentServiceImpl implements AppartmentService {
     @Autowired
     private RayonRepo rayonRepo;
 
+    @Autowired
+    private SerieRepo serieRepo;
+
 
     @Override
     public List<Appartment> findAll() {
@@ -39,7 +43,7 @@ public class AppartmentServiceImpl implements AppartmentService {
                 .price(appartmentModel.getPrice()  != null ? appartmentModel.getPrice() : null)
                 .address(appartmentModel.getAddress() != null ? appartmentModel.getAddress() : null)
                 .manufacturer(manufacturerRepo.getOne(appartmentModel.getManufacturerId()) != null ? manufacturerRepo.getOne(appartmentModel.getManufacturerId()) : null)
-                .serie(appartmentModel.getSerie() != null ? Serie.valueOf(appartmentModel.getSerie()) : null)
+                .serie(appartmentModel.getSerieId() != null ? serieRepo.getOne(appartmentModel.getSerieId()) : null)
                 .condition(appartmentModel.getCondition() != null ? Condition.valueOf(appartmentModel.getCondition()) : null)
                 .typeOfHouse(appartmentModel.getTypeOfHouse() != null ? TypeOfHouse.valueOf(appartmentModel.getTypeOfHouse()) : null)
                 .typeOfSale(appartmentModel.getTypeOfSale() != null ? TypeOfSale.valueOf(appartmentModel.getTypeOfSale()) : null)
@@ -60,7 +64,7 @@ public class AppartmentServiceImpl implements AppartmentService {
                     newAppartment.setPrice(appartmentModel.getPrice()  != null ? appartmentModel.getPrice() : null);
                     newAppartment.setAddress(appartmentModel.getAddress() != null ? appartmentModel.getAddress() : null);
                     newAppartment.setManufacturer(manufacturerRepo.getOne(appartmentModel.getManufacturerId()) != null ? manufacturerRepo.getOne(appartmentModel.getManufacturerId()) : null);
-                    newAppartment.setSerie(appartmentModel.getSerie() != null ? Serie.valueOf(appartmentModel.getSerie()) : null);
+                    newAppartment.setSerie(appartmentModel.getSerieId() != null ? serieRepo.getOne(appartmentModel.getSerieId()) : null);
                     newAppartment.setCondition(appartmentModel.getCondition() != null ? Condition.valueOf(appartmentModel.getCondition()) : null);
                     newAppartment.setTypeOfHouse(appartmentModel.getTypeOfHouse() != null ? TypeOfHouse.valueOf(appartmentModel.getTypeOfHouse()) : null);
                     newAppartment.setTypeOfSale(appartmentModel.getTypeOfSale() != null ? TypeOfSale.valueOf(appartmentModel.getTypeOfSale()) : null);

@@ -1,14 +1,8 @@
 package kg.hackaton.project.bootstrap;
 
 
-import kg.hackaton.project.entities.Oblast;
-import kg.hackaton.project.entities.Rayon;
-import kg.hackaton.project.entities.User;
-import kg.hackaton.project.entities.UserRole;
-import kg.hackaton.project.repositories.OblastRepo;
-import kg.hackaton.project.repositories.RayonRepo;
-import kg.hackaton.project.repositories.UserRepo;
-import kg.hackaton.project.repositories.UserRoleRepo;
+import kg.hackaton.project.entities.*;
+import kg.hackaton.project.repositories.*;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +30,9 @@ public class Bootstrap implements CommandLineRunner {
 
     @Autowired
     private RayonRepo rayonRepo;
+
+    @Autowired
+    private SerieRepo serieRepo;
 
     @Value("${filespath}")
     private String filespath;
@@ -103,6 +100,77 @@ public class Bootstrap implements CommandLineRunner {
                 .oblastCode(2)
                 .build();
         oblastRepo.save(issykkul);
+
+        //SERIES
+        Serie first = Serie.builder()
+                .name("102 серия")
+                .build();
+        serieRepo.save(first);
+
+        Serie second = Serie.builder()
+                .name("104 серия")
+                .build();
+        serieRepo.save(second);
+
+        Serie third = Serie.builder()
+                .name("104 серия улучшенная")
+                .build();
+        serieRepo.save(third);
+
+        Serie fourth = Serie.builder()
+                .name("105 серия")
+                .build();
+        serieRepo.save(fourth);
+
+        Serie fifth = Serie.builder()
+                .name("105 серия улучшенная")
+                .build();
+        serieRepo.save(fifth);
+
+        Serie sixth = Serie.builder()
+                .name("106 серия")
+                .build();
+        serieRepo.save(sixth);
+
+        Serie seventh = Serie.builder()
+                .name("106 серия улучшенная")
+                .build();
+        serieRepo.save(seventh);
+
+        Serie eighth = Serie.builder()
+                .name("сталинка")
+                .build();
+        serieRepo.save(eighth);
+
+        Serie nineth = Serie.builder()
+                .name("хрущевка")
+                .build();
+        serieRepo.save(nineth);
+
+        Serie tenth = Serie.builder()
+                .name("индивид. планировка")
+                .build();
+        serieRepo.save(tenth);
+
+        Serie eleven = Serie.builder()
+                .name("элитка")
+                .build();
+        serieRepo.save(eleven);
+
+        Serie twelve = Serie.builder()
+                .name("малосемейка")
+                .build();
+        serieRepo.save(twelve);
+
+        Serie thirteen = Serie.builder()
+                .name("пентхаус")
+                .build();
+        serieRepo.save(thirteen);
+
+        Serie fourteen = Serie.builder()
+                .name("108 серия")
+                .build();
+        serieRepo.save(fourteen);
 
         try (InputStream inp = new FileInputStream(filespath + "rayons.xls")) {
             Workbook wb = WorkbookFactory.create(inp);

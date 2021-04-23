@@ -7,11 +7,13 @@ import kg.hackaton.project.repositories.AppartmentRepo;
 import kg.hackaton.project.repositories.ClientRepo;
 import kg.hackaton.project.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+@Service
 public class ClientServiceImpl implements ClientService {
 
     @Autowired

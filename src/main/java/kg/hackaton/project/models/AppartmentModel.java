@@ -31,7 +31,7 @@ public class AppartmentModel {
 
     Long manufacturerId;
 
-    String serie;
+    Long serieId;
 
     String condition;
 

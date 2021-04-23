@@ -458,7 +458,7 @@ public class Bootstrap implements CommandLineRunner {
                 .stage(5)
                 .price(new BigDecimal(8000))
                 .address("ул. Боконбаева 39")
-                .manufacturer(manufacturerRepo.save(Manufacturer.builder().name("ЖК Елит хаус").build()))
+                .manufacturer(manufacturerRepo.save(Manufacturer.builder().name("ЖК Элит хаус").build()))
                 .serie(eleven)
                 .condition(Condition.Хорошее)
                 .typeOfHouse(TypeOfHouse.Квартира)
@@ -468,5 +468,39 @@ public class Bootstrap implements CommandLineRunner {
                 .longitude(74.616490)
                 .build();
         appartmentRepo.save(appartment);
+
+        Appartment appartment1 = Appartment.builder()
+                .rayon(rayonRepo.getOne(28L))
+                .countOfRooms(3)
+                .stage(5)
+                .price(new BigDecimal(60000))
+                .address("ул. Исанова 30")
+                .manufacturer(manufacturerRepo.save(Manufacturer.builder().name("ЖК Авангард").build()))
+                .serie(eleven)
+                .condition(Condition.Хорошее)
+                .typeOfHouse(TypeOfHouse.Квартира)
+                .typeOfSale(TypeOfSale.Продажа)
+                .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
+                .latitude(42.8702373)
+                .longitude(74.5904728)
+                .build();
+        appartmentRepo.save(appartment1);
+
+        Appartment appartment2 = Appartment.builder()
+                .rayon(rayonRepo.getOne(28L))
+                .countOfRooms(3)
+                .stage(5)
+                .price(new BigDecimal(120000))
+                .address("ул. Асаналиева 45")
+                .manufacturer(manufacturerRepo.save(Manufacturer.builder().name("ЖК Олимп").build()))
+                .serie(eleven)
+                .condition(Condition.Хорошее)
+                .typeOfHouse(TypeOfHouse.Дом)
+                .typeOfSale(TypeOfSale.Лизинг)
+                .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
+                .latitude(42.8661323)
+                .longitude(74.569608)
+                .build();
+        appartmentRepo.save(appartment2);
     }
 }

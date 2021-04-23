@@ -1,5 +1,6 @@
 package kg.hackaton.project.configs;
 
+import kg.hackaton.project.enums.TypeOfSale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;

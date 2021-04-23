@@ -339,25 +339,25 @@
 
         for (var i = 0; i < list.length; i++) {
             var org = list[i];
-            var totalPlaces = org.total;
-            var totalFree = org.free;
-            var kolVr = org.vr;
-            var kolMs = org.ms;
-            var kolO2 = org.o2;
-            var kolIvl = org.ivl;
-            var icon = '/images/yellow_mark.svg';
+            // var totalPlaces = org.total;
+            // var totalFree = org.free;
+            // var kolVr = org.vr;
+            // var kolMs = org.ms;
+            // var kolO2 = org.o2;
+            // var kolIvl = org.ivl;
+            var icon = '/pin.svg';
 
-            if(totalFree == 0 && kolVr == 0 && kolMs == 0 && kolO2 == 0 && kolIvl == 0){
-                totalPlaces = "нет данных";
-                totalFree = "нет данных";
-                kolVr = "нет данных";
-                kolMs = "нет данных";
-                kolO2 = "нет данных";
-                kolIvl = "нет данных";
-                icon = '/images/disabled_mark.svg';
-            }else if(totalFree == 0){
-                icon = '/images/red_mark.svg';
-            }
+            // if(totalFree == 0 && kolVr == 0 && kolMs == 0 && kolO2 == 0 && kolIvl == 0){
+            //     totalPlaces = "нет данных";
+            //     totalFree = "нет данных";
+            //     kolVr = "нет данных";
+            //     kolMs = "нет данных";
+            //     kolO2 = "нет данных";
+            //     kolIvl = "нет данных";
+            //     icon = '/images/disabled_mark.svg';
+            // }else if(totalFree == 0){
+            //     icon = '/images/red_mark.svg';
+            // }
 
             var isOrder = false;
             var tt = '<h5>Потребности</h5><hr>' +
@@ -366,53 +366,53 @@
                 '<tr><th scope="col">Наименование</th>' +
                 '<th scope="col">Потребность</th></tr>' +
                 '</thead><tbody>';
-            for (var j = 0; j < org.orderItems.length; j++) {
-                tt = tt + '<tr><td>' + org.orderItems[j].ItemName + '</td><td>' + org.orderItems[j].Need + '</td></tr>';
-                isOrder = true;
-            }
-             tt = tt + '</tbody></table> <br> Дата обновления:' + org.orderDate;
+            // for (var j = 0; j < org.orderItems.length; j++) {
+            //     tt = tt + '<tr><td>' + org.orderItems[j].ItemName + '</td><td>' + org.orderItems[j].Need + '</td></tr>';
+            //     isOrder = true;
+            // }
+             tt = tt + '</tbody></table> <br> Дата обновления:';
 
 
 
            // var icon = (totalFree == 0) ? ('/images/red_mark.svg') : ('/images/yellow_mark.svg');
             var placemark = new ymaps.Placemark([org.latitude, org.longitude], {
-                balloonContent: `<div class="listItem"><h5>${org.name}</h5><hr>
+                balloonContent: `<div class="listItem"><h5>${org.address}</h5><hr>
                                 <table class="no-spacing" cellspacing="0">
                                         <tr>
                                             <td><p class="tlabel"><i class="fa fa-map-marker" style="color:red" aria-hidden="true"></i> <b>Адрес:</b></p></td>
                                             <td><p class="tdata">${org.address}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-phone" style="color:green" aria-hidden="true"></i> <b>Номер телефона:</b></p></td>
-                                            <td><p class="tdata"> ${org.tel}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-phone" style="color:green" aria-hidden="true"></i> <b>Цена:</b></p></td>
+                                            <td><p class="tdata"> ${org.price + ' сом'}</p></td>
                                         </tr><tr><td><hr></td><td><hr></td></tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Всего койко-мест:</b></p></td>
-                                            <td><p class="tdata"> ${totalPlaces}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Этаж:</b></p></td>
+                                            <td><p class="tdata"> ${org.stage}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Свободно:</b></p></td>
-                                            <td><p class="tdata"> ${totalFree}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество комнат:</b></p></td>
+                                            <td><p class="tdata"> ${org.countOfRooms}</p></td>
                                         </tr><tr><td><hr></td><td><hr></td></tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-user-md" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество врачей:</b></p></td>
-                                            <td><p class="tdata"> ${kolVr}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-user-md" style="color:#2D65D4" aria-hidden="true"></i> <b>Серия объекта:</b></p></td>
+                                            <td><p class="tdata"> ${org.serie.name}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-user-o" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество медсестер:</b></p></td>
-                                            <td><p class="tdata"> ${kolMs}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-user-o" style="color:#2D65D4" aria-hidden="true"></i> <b>Состояние:</b></p></td>
+                                            <td><p class="tdata"> ${org.condition.valueOf(org.condition)}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Кислородные концентраторы:</b></p></td>
-                                            <td><p class="tdata"> ${kolO2}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Тип объекта:</b></p></td>
+                                            <td><p class="tdata"> ${org.typeOfHouse.valueOf(org.typeOfHouse)}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Аппараты ИВЛ:</b></p></td>
-                                            <td><p class="tdata"> ${kolIvl}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Тип продажи:</b></p></td>
+                                            <td><p class="tdata"> ${org.typeOfSale.valueOf(org.typeOfSale)}</p></td>
                                         </tr><tr><td><hr></td><td><hr></td></tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-calendar" style="color:#2D65D4" aria-hidden="true"></i> <b>Дата обновления:</b></p></td>
-                                            <td><p class="tdata">${org.dateInput} </p></td>
+                                            <td><p class="tlabel"><i class="fa fa-calendar" style="color:#2D65D4" aria-hidden="true"></i> <b>Статус объекта:</b></p></td>
+                                            <td><p class="tdata">${org.busyOrFreeStatus.valueOf(org.busyOrFreeStatus)} </p></td>
                                         </tr>
                                     </table>
                                     ${tt}
@@ -451,77 +451,77 @@
     function setOrgMarkers(map) {
         for (var i = 0; i < list.length; i++) {
             var org = list[i];
-            var total = org.total;
-            var totalPlaces = org.total;
-            var totalFree = org.free;
-            var kolVr = org.vr;
-            var kolMs = org.ms;
-            var kolO2 = org.o2;
-            var kolIvl = org.ivl;
+            // var total = org.total;
+            // var totalPlaces = org.total;
+            // var totalFree = org.free;
+            // var kolVr = org.vr;
+            // var kolMs = org.ms;
+            // var kolO2 = org.o2;
+            // var kolIvl = org.ivl;
 
-            var icon = '/images/yellow_mark.svg';
+            var icon = '/pin.svg';
 
-            if(totalFree == 0 && kolVr == 0 && kolMs == 0 && kolO2 == 0 && kolIvl == 0){
-                totalFree = "нет данных";
-                kolVr = "нет данных";
-                kolMs = "нет данных";
-                kolO2 = "нет данных";
-                kolIvl = "нет данных";
-                icon = '/images/disabled_mark.svg';
-            }else if(totalFree == 0){
-                icon = '/images/red_mark.svg';
-            }
+            // if(totalFree == 0 && kolVr == 0 && kolMs == 0 && kolO2 == 0 && kolIvl == 0){
+            //     totalFree = "нет данных";
+            //     kolVr = "нет данных";
+            //     kolMs = "нет данных";
+            //     kolO2 = "нет данных";
+            //     kolIvl = "нет данных";
+            //     icon = '/images/disabled_mark.svg';
+            // }else if(totalFree == 0){
+            //     icon = '/images/red_mark.svg';
+            // }
 
             var isOrder = false;
             var tt = '<h5>Потребности</h5><hr><table width="100%" border=1><thead><tr><th>Наименование</th><th>Потребность</th></tr></thead><tbody>';
-            for (var j = 0; j < org.orderItems.length; j++) {
-                tt = tt + '<tr><td>' + org.orderItems[j].ItemName + '</td><td>' + org.orderItems[j].Need + '</td></tr>';
-                isOrder = true;
-            }
-            tt = tt + '</tbody></table> <br> Дата обновления:' + org.orderDate;
+            // for (var j = 0; j < org.orderItems.length; j++) {
+            //     tt = tt + '<tr><td>' + org.orderItems[j].ItemName + '</td><td>' + org.orderItems[j].Need + '</td></tr>';
+            //     isOrder = true;
+            // }
+            tt = tt + '</tbody></table> <br> Дата обновления:';
 
             var placemark = new ymaps.Placemark([org.latitude, org.longitude], {
-                balloonContent: `<div class="listItem"><h5>${org.name}</h5><hr>
+                balloonContent: `<div class="listItem"><h5>${org.address}</h5><hr>
                                     <table class="no-spacing" cellspacing="0">
                                         <tr>
                                             <td><p class="tlabel"><i class="fa fa-map-marker" style="color:red" aria-hidden="true"></i> <b>Адрес:</b></p></td>
                                             <td><p class="tdata">${org.address}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-phone" style="color:green" aria-hidden="true"></i> <b>Номер телефона:</b></p></td>
-                                            <td><p class="tdata"> ${org.tel}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-phone" style="color:green" aria-hidden="true"></i> <b>Цена:</b></p></td>
+                                            <td><p class="tdata"> ${org.price + ' сом'}</p></td>
                                         </tr><tr><td><hr></td><td><hr></td></tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Всего койко-мест:</b></p></td>
-                                            <td><p class="tdata"> ${totalPlaces}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Этаж:</b></p></td>
+                                            <td><p class="tdata"> ${org.stage}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Свободно:</b></p></td>
-                                            <td><p class="tdata"> ${totalFree}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество комнат:</b></p></td>
+                                            <td><p class="tdata"> ${org.countOfRooms}</p></td>
                                         </tr><tr><td><hr></td><td><hr></td></tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-user-md" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество врачей:</b></p></td>
-                                            <td><p class="tdata"> ${kolVr}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-user-md" style="color:#2D65D4" aria-hidden="true"></i> <b>Серия объекта:</b></p></td>
+                                            <td><p class="tdata"> ${org.serie.name}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-user-o" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество медсестер:</b></p></td>
-                                            <td><p class="tdata"> ${kolMs}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-user-o" style="color:#2D65D4" aria-hidden="true"></i> <b>Состояние:</b></p></td>
+                                            <td><p class="tdata"> ${org.condition.valueOf(org.condition)}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Кислородные концентраторы:</b></p></td>
-                                            <td><p class="tdata"> ${kolO2}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Тип объекта:</b></p></td>
+                                            <td><p class="tdata"> ${org.typeOfHouse.valueOf(org.typeOfHouse)}</p></td>
                                         </tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Аппараты ИВЛ:</b></p></td>
-                                            <td><p class="tdata"> ${kolIvl}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Тип продажи:</b></p></td>
+                                            <td><p class="tdata"> ${org.typeOfSale.valueOf(org.typeOfSale)}</p></td>
                                         </tr><tr><td><hr></td><td><hr></td></tr>
                                         <tr>
-                                            <td><p class="tlabel"><i class="fa fa-calendar" style="color:#2D65D4" aria-hidden="true"></i> <b>Дата обновления:</b></p></td>
-                                            <td><p class="tdata"> ${org.dateInput}</p></td>
+                                            <td><p class="tlabel"><i class="fa fa-calendar" style="color:#2D65D4" aria-hidden="true"></i> <b>Статус объекта:</b></p></td>
+                                            <td><p class="tdata">${org.busyOrFreeStatus.valueOf(org.busyOrFreeStatus)} </p></td>
                                         </tr>
                                     </table>
                                 </div>`,
-                                clusterCaption: '<strong>' + org.name + '</strong>'
+                                clusterCaption: '<strong>' + org.address + '</strong>'
             }, {
                 iconLayout: 'default#image',
                 iconImageHref: icon,
@@ -541,14 +541,14 @@
             var org = list1[i];
             var lat = org.latitude;
             var lng = org.longitude;
-            var total = org.kovFree+org.peFree;
-            if(total == 0 && org.vr == 0 && org.ms == 0 && org.o2 == 0 && org.ivl == 0){
-                 output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/images/disabled_circle.svg"> ${org.name}</h5></a></li>`;
-            }else if(total == 0){
-                output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/images/red_circle.svg"> ${org.name}</h5></a></li>`;
-            } else{
-                output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/images/yellow_circle.svg"> ${org.name}</h5></a></li>`;
+            if(org.typeOfSale.valueOf(org.typeOfSale) == 'АРЕНДА'){
+                output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/pin.svg"> ${org.typeOfSale.valueOf(org.typeOfSale) + ' | ' +org.manufacturer.name + ' | ' + org.address}</h5></a></li>`;
             }
+            // else if(org.typeOfSale.valueOf(org.typeOfSale) == 'ПРОДАЖА'){
+            //   output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/images/red_circle.svg"> ${org.name}</h5></a></li>`;
+            // } else if(org.typeOfSale.valueOf(org.typeOfSale) == 'ЛИЗИНГ'){
+            //   output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/images/yellow_circle.svg"> ${org.name}</h5></a></li>`;
+            // }
         }
         document.getElementById("list_of_hosp").innerHTML=output;
     }

@@ -213,6 +213,24 @@
                             </span>
                             </a>
                         </li>
+
+                        <li class="nav-item" sec:authorize="hasAuthority('SUPER_ADMIN') or hasAuthority('MAP_READ')">
+                            <a class="nav-link" href="/map/show">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notification"
+                                   width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                   fill="none"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <circle cx="17" cy="7" r="3"></circle>
+                             </svg>
+                            </span>
+                                <span class="nav-link-title">
+                              Карта
+                            </span>
+                            </a>
+                        </li>
                     </ul>
 <!--                    <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">-->
 <!--                        <form action="." method="get">-->

@@ -72,8 +72,8 @@
                                             <form th:id="${user.getId()}"
                                                       th:action="'/admin/user/changeStatus/'+${user.getId()}"
                                                       method="post">
-                                                <button th:class="${user.getUserStatus().name() == 'АКТИВИРОВАН' ? 'btn btn-sm btn-danger' : 'btn btn-sm     btn-success'}"
-                                                        th:text="${user.getUserStatus().name() == 'АКТИВИРОВАН' ? 'Деактивировать' : 'Активировать'}"
+                                                <button th:class="${user.getUserStatus().name() == 'Активирован' ? 'btn btn-sm btn-danger' : 'btn btn-sm btn-success'}"
+                                                        th:text="${user.getUserStatus().name() == 'Активирован' ? 'Деактивировать' : 'Активировать'}"
                                                         th:onclick="|deleteUser('${user.getId()}')|">
                                                 </button>
                                             </form>

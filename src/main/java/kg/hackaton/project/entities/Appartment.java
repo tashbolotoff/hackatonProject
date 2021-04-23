@@ -7,6 +7,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -69,4 +70,7 @@ public class Appartment extends Audit<String>{
     @NumberFormat(pattern = "###.######")
     @Column(name = "longitude")
     Double longitude;
+
+    @OneToMany(mappedBy = "imgPath", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ImgPath> imgPathList;
 }

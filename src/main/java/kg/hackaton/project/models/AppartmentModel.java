@@ -44,4 +44,6 @@ public class AppartmentModel {
     Double latitude;
 
     Double longitude;
+
+
 }

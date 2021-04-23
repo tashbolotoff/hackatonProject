@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "hack_img_path")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class ImgPath {
+public class ImgPath extends Audit<String> {
     @Id
     @GeneratedValue
     @Column(name = "img_path_id")

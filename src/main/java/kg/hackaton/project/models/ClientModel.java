@@ -1,5 +1,6 @@
 package kg.hackaton.project.models;
 
+import kg.hackaton.project.entities.Appartment;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -29,5 +30,5 @@ public class ClientModel {
 
     String dateOfBirth;
 
-    Appartment appartment;
+    Long appartmentId;
 }

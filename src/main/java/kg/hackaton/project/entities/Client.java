@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "hack_img_path")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Client {
+public class Client extends Audit<String> {
 
     @Id
     @GeneratedValue

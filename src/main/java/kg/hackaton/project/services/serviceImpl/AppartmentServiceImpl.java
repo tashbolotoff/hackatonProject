@@ -37,7 +37,7 @@ public class AppartmentServiceImpl implements AppartmentService {
     @Override
     public Appartment create(AppartmentModel appartmentModel) {
         Appartment appartment = Appartment.builder()
-                .rayon(rayonRepo.getOne(appartmentModel.getRayonId())!=null ? rayonRepo.getOne(appartmentModel.getRayonId()) : null)
+                .rayon(rayonRepo.getOne(appartmentModel.getRayonId()) !=null ? rayonRepo.getOne(appartmentModel.getRayonId()) : null)
                 .countOfRooms(appartmentModel.getCountOfRooms() != null ? appartmentModel.getCountOfRooms() : null)
                 .stage(appartmentModel.getStage() != null ? appartmentModel.getStage() : null)
                 .price(appartmentModel.getPrice()  != null ? appartmentModel.getPrice() : null)

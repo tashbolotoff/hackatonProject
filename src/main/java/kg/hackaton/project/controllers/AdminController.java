@@ -98,6 +98,14 @@ public class AdminController {
         return "users/user_form";
     }
 
+    @PreAuthorize("isAuthenticated() and hasPermission('USER_UPDATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/user/update")
+    public String editUser(@ModelAttribute("user") UserModel userModel) {
+        System.out.println(userModel.getUserRoleId());
+        userService.update(userModel);
+        return "redirect:/admin/user/list";
+    }
+
     // OBLAST
     @PreAuthorize("isAuthenticated() and hasPermission('OBLAST_READ', 'SUPER_ADMIN')")
     @GetMapping("/oblast/list")
@@ -230,19 +238,28 @@ public class AdminController {
         return "clients/client_form";
     }
 
-    @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_CREATE', 'SUPER_ADMIN')")
-    @PostMapping(value = "/worldorgs/add")
-    public String addClient(@Validated @ModelAttribute("client") ClientModel clientModel) {
-        clientService.create(clientModel);
-        return "redirect:/admin/client/list";
-    }
-
     @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_UPDATE', 'SUPER_ADMIN')")
     @PostMapping(value = "/client/update")
     public String updateClient(@Validated @ModelAttribute("client") ClientModel clientModel) {
         clientService.update(clientModel);
         return "redirect:/admin/client/list";
     }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_CREATE', 'SUPER_ADMIN')")
+    @GetMapping("/client/add")
+    public String getClientAddForm(Model model) {
+        model.addAttribute("title", "Добавление нового клиента");
+        return "clients/client_form";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('CLIENT_CREATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/client/add")
+    public String addClient(@Validated @ModelAttribute("client") ClientModel clientModel) {
+        clientService.create(clientModel);
+        return "redirect:/admin/client/list";
+    }
+
+
 
     //SERIES
     @PreAuthorize("isAuthenticated() and hasPermission('SERIE_READ', 'SUPER_ADMIN')")
@@ -267,17 +284,24 @@ public class AdminController {
         return "series/serie_form";
     }
 
-    @PreAuthorize("isAuthenticated() and hasPermission('SERIE_CREATE', 'SUPER_ADMIN')")
-    @PostMapping(value = "/serie/add")
-    public String addSerie(@Validated @ModelAttribute("serie") SerieModel serieModel) {
-        serieService.create(serieModel);
-        return "redirect:/admin/serie/list";
-    }
-
     @PreAuthorize("isAuthenticated() and hasPermission('SERIE_UPDATE', 'SUPER_ADMIN')")
     @PostMapping(value = "/serie/update")
     public String updateSerie(@Validated @ModelAttribute("serie") SerieModel serieModel) {
         serieService.update(serieModel);
+        return "redirect:/admin/serie/list";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('SERIE_CREATE', 'SUPER_ADMIN')")
+    @GetMapping("/serie/add")
+    public String getSerieAddForm(Model model) {
+        model.addAttribute("title", "Добавление новой серии");
+        return "series/serie_form";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('SERIE_CREATE', 'SUPER_ADMIN')")
+    @PostMapping(value = "/serie/add")
+    public String addSerie(@Validated @ModelAttribute("serie") SerieModel serieModel) {
+        serieService.create(serieModel);
         return "redirect:/admin/serie/list";
     }
 
@@ -332,11 +356,5 @@ public class AdminController {
         currentUser = userService.getUserByUsername(userDetails.getUsername());
     }
 
-    @PreAuthorize("isAuthenticated() and hasPermission('USER_UPDATE', 'SUPER_ADMIN')")
-    @PostMapping(value = "/user/update")
-    public String editUser(@ModelAttribute("user") UserModel userModel) {
-        System.out.println(userModel.getUserRoleId());
-        userService.update(userModel);
-        return "redirect:/admin/user/list";
-    }
+
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "hack_img_path")
+@Table(name = "hack_client")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Client extends Audit<String> {

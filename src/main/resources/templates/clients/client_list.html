@@ -1,0 +1,150 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head th:replace="header :: head">
+    <meta charset="utf-8">
+</head>
+
+<body class="antialiased">
+<div class="wrapper">
+    <div th:replace="header :: header"></div>
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            Операции над клиентами
+                        </div>
+                        <h2 class="page-title" th:text="${title}">
+                        </h2>
+                    </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <a href="/admin/client/add" class="btn btn-primary d-none d-sm-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                                Добавить нового клиента
+                            </a>
+                            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="row row-cards">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body border-bottom py-3">
+                                <table id="serie_table" class="table table-bordered table-info card-table table-vcenter text-nowrap w-100 h-100">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Имя</th>
+                                        <th>Фамилия</th>
+                                        <th>Отчество</th>
+                                        <th>E-Mail</th>
+                                        <th>Телефон</th>
+                                        <th>Номер паспорта</th>
+                                        <th>ИНН</th>
+                                        <th>Дата рождения</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="client : ${clients}">
+                                        <td th:text="${client.getId()}"></td>
+                                        <td th:text="${client.getName()}"></td>
+                                        <td th:text="${client.getSurname()}"></td>
+                                        <td th:text="${client.getMiddlename()}"></td>
+                                        <td th:text="${client.getEmail()}"></td>
+                                        <td th:text="${client.getPhone()}"></td>
+                                        <td th:text="${client.getPassportNumber()}"></td>
+                                        <td th:text="${client.getPin()}"></td>
+                                        <td th:text="${#dates.format(client.getDateOfBirth(), 'yyyy-MM-dd')}"></td>
+                                        <td class="text-center">
+                                            <a th:href="'/admin/client/'+${client.getId()}" class="btn btn-sm btn-success">Изменить</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="header :: footer"></footer>
+    </div>
+</div>
+
+<!-- DataTables  & Plugins -->
+<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+<script th:src="@{/plugins/jszip/jszip.min.js}"></script>
+<script th:src="@{/plugins/pdfmake/pdfmake.min.js}"></script>
+<script th:src="@{/plugins/pdfmake/vfs_fonts.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $("#serie_table").DataTable({
+            "scrollX": true,
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ записей",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка записей...",
+                "zeroRecords": "Записи отсутствуют.",
+                "emptyTable": "В таблице отсутствуют данные",
+                "paginate":
+                    {
+                        "first": "Первая",
+                        "previous": "Предыдущая",
+                        "next": "Следующая",
+                        "last": "Последняя"
+                    },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                },
+                "select": {
+                    "rows": {
+                        "_": "Выбрано записей: %d",
+                        "0": "Кликните по записи для выбора",
+                        "1": "Выбрана одна запись"
+                    }
+                },
+                "buttons":
+                    {
+                        "print": "Печать",
+                        "colvis": "Видимость столбцов"
+                    }
+            },
+            columnDefs : [
+                { 'visible': false, 'targets': [ ] }
+            ],
+            "buttons": ["csv", "excel", "print", "colvis"]
+        }).buttons().container().appendTo('#pathogen_table_wrapper .col-md-6:eq(0)');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head th:replace="header :: head">
+    <meta charset="utf-8">
+</head>
+
+<body class="antialiased">
+<div class="wrapper">
+    <div th:replace="header :: header"></div>
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            Операции над клиентами
+                        </div>
+                        <h2 class="page-title" th:text="${title}">
+                        </h2>
+                    </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <a href="/admin/client/list" class="btn btn-primary d-none d-sm-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <line x1="5" y1="12" x2="11" y2="18"></line>
+                                    <line x1="5" y1="12" x2="11" y2="6"></line>
+                                </svg>
+                                Вернуться к списку
+                            </a>
+                            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
+                               data-bs-target="#modal-report" aria-label="Create new report">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <line x1="5" y1="12" x2="11" y2="18"></line>
+                                    <line x1="5" y1="12" x2="11" y2="6"></line>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="row row-cards">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Добавление/Изменение клиентов</h3>
+                            </div>
+                            <div class="card-body">
+                                <form th:object="${client}"
+                                      th:action="${client == null ? '/admin/client/add' : '/admin/client/update'}"
+                                      method="post">
+                                    <input type="hidden" id="id" name="clientId" class="form-control"
+                                           th:value="${client != null ? client.getId() : ''}">
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Имя</label>
+                                        <div class="col">
+                                            <input type="text" id="name" name="name" class="form-control"
+                                                   th:value="${client != null ? client.getName() : ''}">
+                                            <small class="form-hint text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Фамилия</label>
+                                        <div class="col">
+                                            <input type="text" id="surname" name="surname" class="form-control"
+                                                   th:value="${client != null ? client.getSurname() : ''}">
+                                            <small class="form-hint text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Отчество</label>
+                                        <div class="col">
+                                            <input type="text" id="middlename" name="middlename" class="form-control"
+                                                   th:value="${client != null ? client.getMiddlename() : ''}">
+                                            <small class="form-hint text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">E-Mail</label>
+                                        <div class="col">
+                                            <input type="text" id="email" name="email" class="form-control"
+                                                   th:value="${client != null ? client.getEmail() : ''}">
+                                            <small class="form-hint text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Телефон</label>
+                                        <div class="col">
+                                            <input type="text" id="phone" name="phone" class="form-control"
+                                                   th:value="${client != null ? client.getPhone() : ''}">
+                                            <small class="form-hint text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Номер паспорта</label>
+                                        <div class="col">
+                                            <input type="text" id="passportNumber" name="passportNumber"
+                                                   class="form-control"
+                                                   th:value="${client != null ? client.getPassportNumber() : ''}">
+                                            <small class="form-hint text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">ИНН</label>
+                                        <div class="col">
+                                            <input type="text" id="pin" name="pin" class="form-control"
+                                                   th:value="${client != null ? client.getPin() : ''}">
+                                            <small class="form-hint text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label class="form-label col-form-label">Дата рождения</label>
+                                        <div class="col">
+                                            <input type="date" name="dateOfBirth"
+                                                   class="form-control"
+                                                   placeholder="Дата рождения"/>
+                                            <div class="invalid-feedback">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" th:value="${_csrf.token}" name="_csrf">
+                                    <div class="form-footer">
+                                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="header :: footer"></footer>
+    </div>
+</div>
+
+</body>
+</html>

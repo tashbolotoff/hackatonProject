@@ -2,7 +2,7 @@ package kg.hackaton.project.bootstrap;
 
 
 import kg.hackaton.project.entities.*;
-import kg.hackaton.project.enums.UserStatus;
+import kg.hackaton.project.enums.*;
 import kg.hackaton.project.repositories.*;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -40,7 +41,13 @@ public class Bootstrap implements CommandLineRunner {
     private PermissionRepo permissionRepo;
 
     @Autowired
+    private ManufacturerRepo manufacturerRepo;
+
+    @Autowired
     private PermissionCategoryRepo permissionCategoryRepo;
+
+    @Autowired
+    private AppartmentRepo appartmentRepo;
 
     @Value("${filespath}")
     private String filespath;
@@ -402,5 +409,21 @@ public class Bootstrap implements CommandLineRunner {
             System.out.println(e);
         }
 
+        Appartment appartment = Appartment.builder()
+                .rayon(rayonRepo.getOne(28L))
+                .countOfRooms(3)
+                .stage(5)
+                .price(new BigDecimal(8000))
+                .address("ул. Боконбаева 39")
+                .manufacturer(manufacturerRepo.save(Manufacturer.builder().name("ЖК Елит хаус").build()))
+                .serie(eleven)
+                .condition(Condition.Хорошее)
+                .typeOfHouse(TypeOfHouse.КВАРТИРА)
+                .typeOfSale(TypeOfSale.АРЕНДА)
+                .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
+                .latitude(42.832808)
+                .longitude(74.616490)
+                .build();
+        appartmentRepo.save(appartment);
     }
 }

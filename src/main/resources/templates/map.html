@@ -1,0 +1,611 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head th:replace="header :: head">
+  <meta charset="utf-8">
+</head>
+
+<body class="antialiased">
+<div class="wrapper">
+  <div th:replace="header :: header"></div>
+  <div class="page-wrapper">
+    <div class="container-fluid">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+              Надзаголовок страницы
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class='container-fluid'>
+        <div class='row'>
+          <div class='col-md-8'>
+            <div id='map_canvas'></div>
+            <p>Все данные обновляются по мере поступления информации из Министерства Здравоохранения Кыргызской Республики.</p>
+          </div>
+          <div class='col-md-4'>
+            <div class='well'>
+              <h5>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="orderCheck" onclick="showOrders(this)" checked="checked">
+                  <label class="form-check-label" for="orderCheck">Cдающиеся в аренду объекты</label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="changeCheck" onclick="showChanges(this)" checked="checked">
+                  <label class="form-check-label" for="changeCheck">Продающиеся объекты</label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="statCheck" onclick="statChanges(this)" checked="checked">
+                  <label class="form-check-label" for="statCheck">Строящиеся объекты</label>
+                </div>
+              </h5>
+              <hr style="margin-top: 5px; margin-bottom: 5px;">
+
+              <h4>
+                Переместить карту
+              </h4>
+
+              <h5>
+                <select class='form-control' onchange="changeReg()" id='change_reg'>
+                  <option value='1' selected>г.Бишкек</option>
+                  <option value='2'>Чуйская область</option>
+                  <option value='3'>Таласская область</option>
+                  <option value='4'>Нарынская область</option>
+                  <option value='5'>Ошская область</option>
+                  <option value='6'>Джалал–Абадская область</option>
+                  <option value='7'>Баткенская область</option>
+                  <option value='8'>Иссык-Кульская область</option>
+                </select>
+              </h5>
+
+
+
+              <a class='btn btn-default' id='reset' href='#'>
+                <i class='glyphicon glyphicon-repeat'></i>
+                Перезагрузить карту
+              </a>
+              <hr style="margin-top: 5px; margin-bottom: 5px;">
+              <h4>Список всех объектов</h4>
+              <p>
+                <input class='form-control controls' id='search_hosp' placeholder='Введите адрес объекта' type='text' />
+              </p>
+              <div style="overflow:scroll; height: 30vh;">
+                <ul class="hosplist" id="list_of_hosp"> </ul>
+                <ul class="hosplist" id="list_of_stac"> </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://api-maps.yandex.ru/2.1/?apikey=035604b1-b216-4834-a344-937091d4f139&lang=ru_RU" type="text/javascript"> </script>
+
+      <style type="text/css">
+
+        @media screen and (min-device-width: 376px) {
+        .customControl {
+        display: none;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 3px;
+        width: 45%;
+        height: 350px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        position:absolute;
+        left:50px;
+        top: 50px;
+
+        }
+        }
+        @media screen and (max-device-width: 375px) {
+        .customControl {
+        display: none;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 3px;
+        height: 350px;
+        display: flex;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        position:absolute;
+        left:50px;
+        top: 50px;
+
+        }
+        }
+
+        .closeButton {
+        flex-basis: 15px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        padding: 3px;
+        height: 15px;
+        cursor: pointer;
+        background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMTQgLjdsLS43LS43TDcgNi4zLjcgMCAwIC43IDYuMyA3IDAgMTMuM2wuNy43TDcgNy43bDYuMyA2LjMuNy0uN0w3LjcgN3oiIGNsaXAtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") 50% no-repeat;
+        opacity: 0.3;
+        }
+
+        .content {
+        padding: 5px;
+        max-height: 500px;
+        overflow: auto;
+        }
+
+        a, a:visited {
+        color: #04b;
+        text-decoration: none !important;
+        }
+      </style>
+
+      <script th:inline="javascript">
+        var list = [[${list}]];
+        console.log(list);
+      </script>
+
+      <script type='text/javascript'>
+        ymaps.modules.define('Panel', [
+          'util.augment',
+          'collection.Item'
+        ], function (provide, augment, item) {
+          // Создаем собственный класс.
+          var Panel = function (options) {
+            Panel.superclass.constructor.call(this, options);
+          };
+
+          // И наследуем его от collection.Item.
+          augment(Panel, item, {
+            onAddToMap: function (map) {
+              Panel.superclass.onAddToMap.call(this, map);
+              this.getParent().getChildElement(this).then(this._onGetChildElement, this);
+              // Добавим отступы на карту.
+              // Отступы могут учитываться при установке текущей видимой области карты,
+              // чтобы добиться наилучшего отображения данных на карте.
+              map.margin.addArea({
+                top: 0,
+                left: 0,
+                width: '250px',
+                height: '100%'
+              })
+            },
+
+            onRemoveFromMap: function (oldMap) {
+              if (this._$control) {
+                this._$control.remove();
+              }
+              Panel.superclass.onRemoveFromMap.call(this, oldMap);
+            },
+
+            _onGetChildElement: function (parentDomContainer) {
+              // Создаем HTML-элемент с текстом.
+              // По-умолчанию HTML-элемент скрыт.
+              this._$control = $('<div class="customControl"><div class="content"></div><div class="closeButton"></div></div>').appendTo(parentDomContainer);
+              this._$content = $('.content');
+              // При клике по крестику будем скрывать панель.
+              $('.closeButton').on('click', this._onClose);
+            },
+            _onClose: function () {
+              $('.customControl').css('display', 'none');
+            },
+            // Метод задания контента панели.
+            setContent: function (text) {
+              // При задании контента будем показывать панель.
+              this._$control.css('display', 'flex');
+              this._$content.html(text);
+            }
+          });
+
+          provide(Panel);
+        });
+
+        $(window).resize(function () {
+          var h = $(window).height(),
+                  offsetTop = 105; // Calculate the top offset
+          $('#map_canvas').css('height', ((h - offsetTop)-50));
+        }).resize();
+
+        function changeReg() {
+          var x = document.getElementById("change_reg").value,
+                  loc = [42.86, 74.56];
+          if(x==='1'){
+            loc = [42.879760, 74.616508];
+            window.map.setCenter(loc, 12, {
+              checkZoomRange: true
+            });
+          }
+          if(x==='2'){
+            loc = [42.603206, 74.521169];
+            window.map.setCenter(loc, 8, {
+              checkZoomRange: true
+            });
+          }
+          if(x==='3'){
+            loc = [42.446444, 72.169599];
+            window.map.setCenter(loc, 8, {
+              checkZoomRange: true
+            });
+          }
+          if(x==='4'){
+            loc = [41.319955, 75.892864];
+            window.map.setCenter(loc, 8, {
+              checkZoomRange: true
+            });
+          }
+          if(x==='5'){
+            loc = [40.171055, 73.394937];
+            window.map.setCenter(loc, 8, {
+              checkZoomRange: true
+            });
+          }
+          if(x==='6'){
+            loc = [41.748378, 72.358784];
+            window.map.setCenter(loc, 8, {
+              checkZoomRange: true
+            });
+          }
+          if(x==='7'){
+            loc = [39.723640, 70.929430];
+            window.map.setCenter(loc, 8, {
+              checkZoomRange: true
+            });
+          }
+          if(x==='8'){
+            loc = [42.135612, 77.963822];
+            window.map.setCenter(loc, 8, {
+              checkZoomRange: true
+            });
+          }
+        }
+
+        var orderMarks = [];
+        var changeMarks = [];
+        var statsMarks = [];
+
+        function showOrders(cb) {
+          for(var i = 0; i < orderMarks.length; i++){
+            orderMarks[i].options.set('visible', cb.checked);;
+          }
+        }
+
+        function showChanges(cb) {
+          for(var i = 0; i < changeMarks.length; i++){
+            changeMarks[i].options.set('visible', cb.checked);;
+          }
+        }
+
+        function statChanges(cb) {
+          for(var i = 0; i < statsMarks.length; i++){
+            statsMarks[i].options.set('visible', cb.checked);
+          }
+        }
+
+
+        function lpad(o, l) {
+          let s = o + "";
+          while (s.length < l) s = "0" + s;
+          return s;
+        }
+
+        ymaps.ready(initMap);
+
+        window.map = undefined;
+        var myGeoObjects = [];
+
+        function initMap(){
+          var myMap = new ymaps.Map("map_canvas", {
+            center: [41.569945, 74.670572],
+            zoom: 7,
+            controls: ['geolocationControl', 'zoomControl', 'searchControl', 'routeButtonControl', 'fullscreenControl']
+          });
+
+          window.map = myMap;
+          ymaps.ready(['Panel']).then(function () {
+            setHospitalMarkers(window.map);
+          });
+
+          //setOrgMarkers(window.map);
+          setListOfHospitals(window.list);
+          // setListOfStacionars(window.listStac);
+
+          var clusterer = new ymaps.Clusterer({
+            preset: 'islands#invertedVioletClusterIcons',
+            groupByCoordinates: false,
+            //clusterDisableClickZoom: true,
+            clusterHideIconOnBalloonOpen: false,
+            geoObjectHideIconOnBalloonOpen: false
+          });
+          clusterer.add(myGeoObjects);
+          window.map.geoObjects.add(clusterer);
+        }
+
+        function setHospitalMarkers(map) {
+          // Создадим и добавим панель на карту.
+          var panel = new ymaps.Panel();
+          map.controls.add(panel, {
+            float: 'left'
+          });
+          var collection = new ymaps.GeoObjectCollection(null, {
+            // Запретим появление балуна.
+            hasBalloon: false,
+            iconColor: '#3b5998'
+          });
+
+          for (var i = 0; i < list.length; i++) {
+            var org = list[i];
+            var countOfRooms = org.countOfRooms;
+            var stage = org.stage;
+            var price = org.price;
+            var address = org.address;
+            var manufacturer = org.manufacturer.name;
+            var serie = org.serie.name;
+            var condition = org.condition.valueOf(org.condition.name);
+            var typeOfHouse = org.typeOfHouse.valueOf(org.typeOfHouse.name);
+            var typeOfSale = org.typeOfSale.valueOf(org.typeOfSale.name);
+            var busyOrFreeStatus = org.busyOrFreeStatus.valueOf(org.busyOrFreeStatus.name);
+
+            var icon = '/images/yellow_mark.svg';
+
+            // if(totalFree == 0 && kolVr == 0 && kolMs == 0 && kolO2 == 0 && kolIvl == 0){
+            //   totalPlaces = "нет данных";
+            //   totalFree = "нет данных";
+            //   kolVr = "нет данных";
+            //   kolMs = "нет данных";
+            //   kolO2 = "нет данных";
+            //   kolIvl = "нет данных";
+            //   icon = '/images/disabled_mark.svg';
+            // }else if(totalFree == 0){
+            //   icon = '/images/red_mark.svg';
+            // }
+
+            var isOrder = false;
+            var tt = '<h5>Потребности</h5><hr>' +
+                    '<table style="width:60%;" class="table table-sm table-striped" border=1>' +
+                    '<thead>' +
+                    '<tr><th scope="col">Наименование</th>' +
+                    '<th scope="col">Потребность</th></tr>' +
+                    '</thead><tbody>';
+            for (var j = 0; j < org.orderItems.length; j++) {
+              tt = tt + '<tr><td>' + org.orderItems[j].ItemName + '</td><td>' + org.orderItems[j].Need + '</td></tr>';
+              isOrder = true;
+            }
+            tt = tt + '</tbody></table> <br> Дата обновления:' + org.orderDate;
+
+
+
+            // var icon = (totalFree == 0) ? ('/images/red_mark.svg') : ('/images/yellow_mark.svg');
+            var placemark = new ymaps.Placemark([org.latitude, org.longitude], {
+              balloonContent: `<div class="listItem"><h5>${org.name}</h5><hr>
+                                <table class="no-spacing" cellspacing="0">
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-map-marker" style="color:red" aria-hidden="true"></i> <b>Адрес:</b></p></td>
+                                            <td><p class="tdata">${org.address}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-phone" style="color:green" aria-hidden="true"></i> <b>Номер телефона:</b></p></td>
+                                            <td><p class="tdata"> ${org.tel}</p></td>
+                                        </tr><tr><td><hr></td><td><hr></td></tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Всего койко-мест:</b></p></td>
+                                            <td><p class="tdata"> ${totalPlaces}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Свободно:</b></p></td>
+                                            <td><p class="tdata"> ${totalFree}</p></td>
+                                        </tr><tr><td><hr></td><td><hr></td></tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-user-md" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество врачей:</b></p></td>
+                                            <td><p class="tdata"> ${kolVr}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-user-o" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество медсестер:</b></p></td>
+                                            <td><p class="tdata"> ${kolMs}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Кислородные концентраторы:</b></p></td>
+                                            <td><p class="tdata"> ${kolO2}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Аппараты ИВЛ:</b></p></td>
+                                            <td><p class="tdata"> ${kolIvl}</p></td>
+                                        </tr><tr><td><hr></td><td><hr></td></tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-calendar" style="color:#2D65D4" aria-hidden="true"></i> <b>Дата обновления:</b></p></td>
+                                            <td><p class="tdata">${org.dateInput} </p></td>
+                                        </tr>
+                                    </table>
+                                    ${tt}
+                                </div>`,
+              clusterCaption: '<strong>' + org.name + '</strong>'
+            }, {
+              iconLayout: 'default#image',
+              iconImageHref: icon,
+              balloonOffset: [3, -40],
+              hideIconOnBalloonOpen: false
+            });
+            //myGeoObjects.push(placemark);
+            //window.map.geoObjects.add(placemark);
+            collection.add(placemark);
+            myGeoObjects.push(placemark);
+            statsMarks.push(placemark);
+            if(isOrder){
+              orderMarks.push(placemark);
+            }else{
+              changeMarks.push(placemark);
+            }
+          }
+
+          map.geoObjects.add(collection);
+
+          collection.events.add('click', function (e) {
+            // Получим ссылку на геообъект, по которому кликнул пользователь.
+            var target = e.get('target');
+            // Зададим контент боковой панели.
+            panel.setContent(target.properties.get('balloonContent'));
+            // Переместим центр карты по координатам метки с учётом заданных отступов.
+            //map.panTo(target.geometry.getCoordinates(), {useMapMargin: true});
+          });
+        }
+
+        function setOrgMarkers(map) {
+          for (var i = 0; i < list.length; i++) {
+            var org = list[i];
+            var total = org.total;
+            var totalPlaces = org.total;
+            var totalFree = org.free;
+            var kolVr = org.vr;
+            var kolMs = org.ms;
+            var kolO2 = org.o2;
+            var kolIvl = org.ivl;
+
+            var icon = '/images/yellow_mark.svg';
+
+            if(totalFree == 0 && kolVr == 0 && kolMs == 0 && kolO2 == 0 && kolIvl == 0){
+              totalFree = "нет данных";
+              kolVr = "нет данных";
+              kolMs = "нет данных";
+              kolO2 = "нет данных";
+              kolIvl = "нет данных";
+              icon = '/images/disabled_mark.svg';
+            }else if(totalFree == 0){
+              icon = '/images/red_mark.svg';
+            }
+
+            var isOrder = false;
+            var tt = '<h5>Потребности</h5><hr><table width="100%" border=1><thead><tr><th>Наименование</th><th>Потребность</th></tr></thead><tbody>';
+            for (var j = 0; j < org.orderItems.length; j++) {
+              tt = tt + '<tr><td>' + org.orderItems[j].ItemName + '</td><td>' + org.orderItems[j].Need + '</td></tr>';
+              isOrder = true;
+            }
+            tt = tt + '</tbody></table> <br> Дата обновления:' + org.orderDate;
+
+            var placemark = new ymaps.Placemark([org.latitude, org.longitude], {
+              balloonContent: `<div class="listItem"><h5>${org.name}</h5><hr>
+                                    <table class="no-spacing" cellspacing="0">
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-map-marker" style="color:red" aria-hidden="true"></i> <b>Адрес:</b></p></td>
+                                            <td><p class="tdata">${org.address}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-phone" style="color:green" aria-hidden="true"></i> <b>Номер телефона:</b></p></td>
+                                            <td><p class="tdata"> ${org.tel}</p></td>
+                                        </tr><tr><td><hr></td><td><hr></td></tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Всего койко-мест:</b></p></td>
+                                            <td><p class="tdata"> ${totalPlaces}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-bed" style="color:#2D65D4" aria-hidden="true"></i> <b>Свободно:</b></p></td>
+                                            <td><p class="tdata"> ${totalFree}</p></td>
+                                        </tr><tr><td><hr></td><td><hr></td></tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-user-md" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество врачей:</b></p></td>
+                                            <td><p class="tdata"> ${kolVr}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-user-o" style="color:#2D65D4" aria-hidden="true"></i> <b>Количество медсестер:</b></p></td>
+                                            <td><p class="tdata"> ${kolMs}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Кислородные концентраторы:</b></p></td>
+                                            <td><p class="tdata"> ${kolO2}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-heartbeat" style="color:#2D65D4" aria-hidden="true"></i> <b>Аппараты ИВЛ:</b></p></td>
+                                            <td><p class="tdata"> ${kolIvl}</p></td>
+                                        </tr><tr><td><hr></td><td><hr></td></tr>
+                                        <tr>
+                                            <td><p class="tlabel"><i class="fa fa-calendar" style="color:#2D65D4" aria-hidden="true"></i> <b>Дата обновления:</b></p></td>
+                                            <td><p class="tdata"> ${org.dateInput}</p></td>
+                                        </tr>
+                                    </table>
+                                </div>`,
+              clusterCaption: '<strong>' + org.name + '</strong>'
+            }, {
+              iconLayout: 'default#image',
+              iconImageHref: icon,
+              balloonOffset: [3, -40],
+              hideIconOnBalloonOpen: false
+            });
+            myGeoObjects.push(placemark);
+
+            statsMarks.push(placemark);
+            //window.map.geoObjects.add(placemark);
+          }
+        }
+
+        function setListOfHospitals(list1){
+          var output='';
+          for (var i = 0; i < list1.length; i++) {
+            var org = list1[i];
+            var lat = org.latitude;
+            var lng = org.longitude;
+            var total = org.kovFree+org.peFree;
+            if(total == 0 && org.vr == 0 && org.ms == 0 && org.o2 == 0 && org.ivl == 0){
+              output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/images/disabled_circle.svg"> ${org.name}</h5></a></li>`;
+            }else if(total == 0){
+              output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/images/red_circle.svg"> ${org.name}</h5></a></li>`;
+            } else{
+              output+=`<li><a onclick="moveToLocation(${lat},${lng});" href='#'><h5><img src="/images/yellow_circle.svg"> ${org.name}</h5></a></li>`;
+            }
+          }
+          document.getElementById("list_of_hosp").innerHTML=output;
+        }
+
+
+        document.getElementById("search_hosp").onkeyup = function() {
+          // Declare variables
+          var input, filter, ul, li, a, i, txtValue;
+          input = document.getElementById('search_hosp');
+          filter = input.value.toUpperCase();
+          ul = document.getElementById("list_of_hosp");
+          ul1 = document.getElementById("list_of_stac");
+          li = ul.getElementsByTagName('li');
+          li1 = ul1.getElementsByTagName('li');
+
+          // Loop through all list items, and hide those who don't match the search query
+          for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+            } else {
+              li[i].style.display = "none";
+            }
+          }
+          // Loop through all list items, and hide those who don't match the search query
+          for (i = 0; i < li1.length; i++) {
+            a = li1[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              li1[i].style.display = "";
+            } else {
+              li1[i].style.display = "none";
+            }
+          }
+        }
+
+        document.getElementById("reset").onclick = function() {
+          window.map.destroy();
+          myGeoObjects.length = 0;
+          initMap();
+        }
+
+        function moveToLocation(lat, lng){
+          window.map.setCenter([lat, lng], 17, {
+            checkZoomRange: true
+          });
+        }
+
+      </script>
+    </div>
+    <footer th:replace="header :: footer"></footer>
+  </div>
+</div>
+</body>
+</html>

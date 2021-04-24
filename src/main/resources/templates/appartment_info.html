@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
       lang="en">
 <head th:replace="header :: head">
     <meta charset="utf-8">
@@ -135,7 +135,9 @@
                                             <label class="form-label col-3 col-form-label" th:text="${appartment != null ? appartment.getLongitude() : ''}"></label>
                                         </div>
                                     </div>
-
+                                    <div sec:authorize="hasRole('ROLE_MANAGER')" class="form-footer">
+                                        <a th:href="${'/contract/add/' + appartment.id}" class="btn btn-success">Перейти к договору</a>
+                                    </div>
                                 </form>
                             </div>
                         </div>

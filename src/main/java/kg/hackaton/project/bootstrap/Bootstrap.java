@@ -4,7 +4,9 @@ package kg.hackaton.project.bootstrap;
 import kg.hackaton.project.entities.*;
 import kg.hackaton.project.enums.*;
 import kg.hackaton.project.repositories.*;
+import org.apache.catalina.LifecycleState;
 import org.apache.poi.ss.usermodel.*;
+import org.hibernate.tuple.InMemoryValueGenerationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +18,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class Bootstrap implements CommandLineRunner {
@@ -52,8 +55,21 @@ public class Bootstrap implements CommandLineRunner {
     @Autowired
     private AppartmentRepo appartmentRepo;
 
+    @Autowired
+    private ImgPathRepo imgPathRepo;
+
     @Value("${filespath}")
     private String filespath;
+
+    @Value("${image1}")
+    private String image1;
+
+    @Value("${image2}")
+    private String image2;
+    @Value("${image3}")
+    private String image3;
+    @Value("${image4}")
+    private String image4;
 
     @Override
     public void run(String... args) throws Exception {
@@ -525,6 +541,30 @@ public class Bootstrap implements CommandLineRunner {
         } catch (Exception e) {
             System.out.println(e);
         }
+        List<ImgPath> imgPaths = new ArrayList<>();
+        ImgPath imgPath = ImgPath.builder()
+                .path(image1)
+                .build();
+        imgPathRepo.save(imgPath);
+        imgPaths.add(imgPath);
+
+        ImgPath imgPath2 = ImgPath.builder()
+                .path(image2)
+                .build();
+        imgPathRepo.save(imgPath2);
+        imgPaths.add(imgPath2);
+
+        ImgPath imgPath3 = ImgPath.builder()
+                .path(image3)
+                .build();
+        imgPathRepo.save(imgPath3);
+        imgPaths.add(imgPath3);
+
+        ImgPath imgPath4 = ImgPath.builder()
+                .path(image4)
+                .build();
+        imgPathRepo.save(imgPath4);
+        imgPaths.add(imgPath4);
 
         Appartment appartment = Appartment.builder()
                 .rayon(rayonRepo.getOne(67L))
@@ -540,6 +580,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
                 .latitude(42.832808)
                 .longitude(74.616490)
+                .imgPaths(imgPaths)
                 .build();
         appartmentRepo.save(appartment);
 
@@ -557,6 +598,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
                 .latitude(42.8702373)
                 .longitude(74.5904728)
+                .imgPaths(imgPaths)
                 .build();
         appartmentRepo.save(appartment1);
 
@@ -574,6 +616,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
                 .latitude(42.8661323)
                 .longitude(74.569608)
+                .imgPaths(imgPaths)
                 .build();
         appartmentRepo.save(appartment2);
 
@@ -591,6 +634,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
                 .latitude(42.8661323)
                 .longitude(74.569608)
+                .imgPaths(imgPaths)
                 .build();
         appartmentRepo.save(appartment3);
 
@@ -608,6 +652,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
                 .latitude(42.8661323)
                 .longitude(74.569608)
+                .imgPaths(imgPaths)
                 .build();
         appartmentRepo.save(appartment4);
 
@@ -625,6 +670,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
                 .latitude(42.8661323)
                 .longitude(74.569608)
+                .imgPaths(imgPaths)
                 .build();
         appartmentRepo.save(appartment5);
 
@@ -642,6 +688,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
                 .latitude(42.8661323)
                 .longitude(74.569608)
+                .imgPaths(imgPaths)
                 .build();
         appartmentRepo.save(appartment6);
     }

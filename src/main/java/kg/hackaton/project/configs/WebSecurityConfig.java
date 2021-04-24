@@ -34,7 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/",
-                        "/avatars",
+                        "/appartment/info/*",
+                        "/avatars/*",
                         "/css/**",
                         "/icons/**",
                         "/illustrations/**",
@@ -43,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/libs/**",
                         "/logos/*",
                         "/plugins/****",
+                        "/plugins/jquery/****",
                         "/client/registration")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/admin/index").permitAll()

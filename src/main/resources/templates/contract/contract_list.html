@@ -44,6 +44,7 @@
                                         <th>Дата начала аренды</th>
                                         <th>Дата конца аренды</th>
                                         <th>Дата продажи</th>
+                                        <th>Cтоимость аренды</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -57,7 +58,7 @@
                                         <td th:text="${#dates.format(item.getDateOfStart(), 'yyyy-MM-dd')}"></td>
                                         <td th:text="${#dates.format(item.getDateOfEnd(), 'yyyy-MM-dd')}"></td>
                                         <td th:text="${#dates.format(item.getDateOfSell(), 'yyyy-MM-dd')}"></td>
-
+                                        <td th:with="days=${T(java.util.concurrent.TimeUnit).DAYS}, millis=${T(java.util.concurrent.TimeUnit).MILLISECONDS}" th:text="${item.getAppartment().getTypeOfSale().name().equals('Аренда') ? (item.getAppartment().getPrice() / 30 ) * days.convert(item.getDateOfEnd().getTime() - item.getDateOfStart().getTime(), millis) : ''}" ></td>
                                     </tr>
                                     </tbody>
                                 </table>

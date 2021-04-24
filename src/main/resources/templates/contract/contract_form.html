@@ -74,7 +74,7 @@
                                     </div>
 
                                     <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Цена:</label>
+                                        <label class="form-label col-3 col-form-label" th:text="${appartment.getTypeOfSale().valueOf(appartment.getTypeOfSale()) == 'Аренда' ? 'Месячная стоимость обьекта' : 'Стоимость объекта'}"></label>
                                         <div class="col">
                                             <input type="text" class="form-control" disabled th:value="${appartment != null ? appartment.getPrice() : ''}">
                                             <small class="form-hint text-danger"></small>
@@ -99,7 +99,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-2" th:if="${appartment.getTypeOfSale().name().equals('Аренда')}">
                                         <label class="form-label col-form-label">Дата начала аренды:</label>
                                         <div class="col">
                                             <input type="date" name="dateOfStart"
@@ -110,7 +110,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-2" th:if="${appartment.getTypeOfSale().name().equals('Аренда')}">
                                         <label class="form-label col-form-label">Дата конца аренды:</label>
                                         <div class="col">
                                             <input type="date" name="dateOfEnd"
@@ -121,7 +121,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-lg-2">
+                                    <div class="form-group col-lg-2" th:if="${appartment.getTypeOfSale().name().equals('Продажа')}">
                                         <label class="form-label col-form-label">Дата продажи:</label>
                                         <div class="col">
                                             <input type="date" name="dateOfSell"

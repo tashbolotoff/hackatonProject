@@ -49,7 +49,6 @@ public class AppartmentClientServiceImpl implements AppartmentClientService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        appartment.setTypeOfSale(appartmentClientModel.getTypeOfSale() != null ? TypeOfSale.valueOf(appartmentClientModel.getTypeOfSale()) : null);
         appartmentRepo.save(appartment);
         return appartmentClientRepo.save(appartmentClient);
     }

@@ -344,13 +344,11 @@ public class Bootstrap implements CommandLineRunner {
                 .userRole(userRoleManager)
                 .build();
         userRepo.save(manager);
-        UserRole userRole = UserRole.builder().name("ROLE_CLIENT").build();
-        userRoleRepo.save(userRole);
         User client = User.builder()
                 .username("client")
                 .password("client")
                 .userStatus(UserStatus.Активирован)
-                .userRole(userRole)
+                .userRole(userRoleClient)
                 .build();
         userRepo.save(client);
 

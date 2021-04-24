@@ -76,7 +76,7 @@
                                         <td th:text="${appartment.getBusyOrFreeStatus()}"></td>
 
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-primary">Подробнее</button>
+                                            <a th:href="'/appartment/info/' + ${appartment.getId()}" class="btn btn-sm btn-primary">Подробнее</a>
                                             <a th:href="'/admin/appartment/edit/' + ${appartment.getId()}" class="btn btn-sm btn-success">Изменить</a>
                                         </td>
                                     </tr>

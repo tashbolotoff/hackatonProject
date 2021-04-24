@@ -576,31 +576,40 @@ public class Bootstrap implements CommandLineRunner {
         } catch (Exception e) {
             System.out.println(e);
         }
-        List<ImgPath> imgPaths = new ArrayList<>();
+        List<ImgPath> imgPaths1 = new ArrayList<>();
+        List<ImgPath> imgPaths2 = new ArrayList<>();
+        List<ImgPath> imgPaths3 = new ArrayList<>();
+        List<ImgPath> imgPaths4 = new ArrayList<>();
+        List<ImgPath> imgPaths5 = new ArrayList<>();
+        List<ImgPath> imgPaths6 = new ArrayList<>();
+        List<ImgPath> imgPaths7 = new ArrayList<>();
         ImgPath imgPath = ImgPath.builder()
                 .path(image1)
                 .build();
         imgPathRepo.save(imgPath);
-        imgPaths.add(imgPath);
+        imgPaths1.add(imgPath);
 
         ImgPath imgPath2 = ImgPath.builder()
                 .path(image2)
                 .build();
         imgPathRepo.save(imgPath2);
-        imgPaths.add(imgPath2);
+        imgPaths2.add(imgPath2);
 
         ImgPath imgPath3 = ImgPath.builder()
                 .path(image3)
                 .build();
         imgPathRepo.save(imgPath3);
-        imgPaths.add(imgPath3);
+        imgPaths3.add(imgPath3);
 
         ImgPath imgPath4 = ImgPath.builder()
                 .path(image4)
                 .build();
         imgPathRepo.save(imgPath4);
-        imgPaths.add(imgPath4);
+        imgPaths4.add(imgPath4);
 
+        imgPaths5.add(imgPath);
+        imgPaths6.add(imgPath2);
+        imgPaths7.add(imgPath3);
         Appartment appartment = Appartment.builder()
                 .rayon(rayonRepo.getOne(67L))
                 .countOfRooms(1)
@@ -615,7 +624,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
                 .latitude(42.832808)
                 .longitude(74.616490)
-                .imgPaths(imgPaths)
+                .imgPaths(imgPaths1)
                 .build();
         appartmentRepo.save(appartment);
 
@@ -633,7 +642,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
                 .latitude(42.8702373)
                 .longitude(74.5904728)
-                .imgPaths(imgPaths)
+                .imgPaths(imgPaths2)
                 .build();
         appartmentRepo.save(appartment1);
 
@@ -651,7 +660,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
                 .latitude(42.8661323)
                 .longitude(74.569608)
-                .imgPaths(imgPaths)
+                .imgPaths(imgPaths3)
                 .build();
         appartmentRepo.save(appartment2);
 
@@ -669,7 +678,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
                 .latitude(42.8661323)
                 .longitude(74.569608)
-                .imgPaths(imgPaths)
+                .imgPaths(imgPaths4)
                 .build();
         appartmentRepo.save(appartment3);
 
@@ -687,7 +696,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
                 .latitude(42.8661323)
                 .longitude(74.569608)
-                .imgPaths(imgPaths)
+                .imgPaths(imgPaths5)
                 .build();
         appartmentRepo.save(appartment4);
 
@@ -705,7 +714,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
                 .latitude(42.8661323)
                 .longitude(74.569608)
-                .imgPaths(imgPaths)
+                .imgPaths(imgPaths6)
                 .build();
         appartmentRepo.save(appartment5);
 
@@ -723,7 +732,7 @@ public class Bootstrap implements CommandLineRunner {
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
                 .latitude(42.8661323)
                 .longitude(74.569608)
-                .imgPaths(imgPaths)
+                .imgPaths(imgPaths7)
                 .build();
         appartmentRepo.save(appartment6);
     }

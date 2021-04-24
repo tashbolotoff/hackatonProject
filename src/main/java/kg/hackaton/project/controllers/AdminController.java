@@ -1,5 +1,6 @@
 package kg.hackaton.project.controllers;
 
+import kg.hackaton.project.entities.Appartment;
 import kg.hackaton.project.entities.User;
 import kg.hackaton.project.enums.BusyOrFreeStatus;
 import kg.hackaton.project.enums.Condition;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -364,7 +366,11 @@ public class AdminController {
 
     @GetMapping("/charts")
     public String getChart(Model model) {
-        model.addAttribute("list", appartmentService.findAll());
+        List<Appartment> appartments = appartmentService.findAll();
+        for(Appartment appartment : appartments){
+            appartment.setImgPaths(null);
+        }
+        model.addAttribute("list", appartments);
         setUserCredentials(model);
         return "charts/charts";
     }

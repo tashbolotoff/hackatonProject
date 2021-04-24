@@ -28,7 +28,7 @@
     <script th:src="@{/plugins/jquery/jquery.min.js}"></script>
     <!-- jQuery -->
     <script th:src="@{/select2/js/select2.min.js}"></script>
-    <script src="http://localhost:8080/livereload.js"></script>
+    <script src="http://localhost:35729/livereload.js"></script>
 </head>
 <body class="antialiased">
 <div th:fragment="header">
@@ -176,9 +176,17 @@
                                            class="dropdown-item" href="/contract/list">
                                             Договора
                                         </a>
-                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('APPARTMENT_READ')"
-                                           class="dropdown-item" href="/admin/charts">
-                                            Диаграммы/Чарты
+<!--                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('CHART_READ')"-->
+<!--                                           class="dropdown-item" href="/admin/charts">-->
+<!--                                            Диаграммы/Чарты-->
+<!--                                        </a>-->
+<!--                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('OTCHET_READ')"-->
+<!--                                           class="dropdown-item" href="/admin/otchetByRent">-->
+<!--                                            Отчеты по аренде-->
+<!--                                        </a>-->
+                                        <a sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('OTCHET_READ')"
+                                           class="dropdown-item" href="/admin/otchetBySell">
+                                            Отчеты по продажам
                                         </a>
                                     </div>
 <!--                                    <div class="dropdown-menu-column">-->
@@ -217,6 +225,60 @@
                             </span>
                                 <span class="nav-link-title">
                               Выдача привилегий по ролям
+                            </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('CHART_READ')">
+                            <a class="nav-link" href="/admin/charts">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notification"
+                                   width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                   fill="none"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <circle cx="17" cy="7" r="3"></circle>
+                             </svg>
+                            </span>
+                                <span class="nav-link-title">
+                              Чарты/Диаграммы
+                            </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('OTCHET_READ')">
+                            <a class="nav-link" href="/admin/otchetByRent">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notification"
+                                   width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                   fill="none"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <circle cx="17" cy="7" r="3"></circle>
+                             </svg>
+                            </span>
+                                <span class="nav-link-title">
+                              Отчеты по аренде
+                            </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="hasAuthority('SUPER_ADMIN') OR hasAuthority('OTCHET_READ')">
+                            <a class="nav-link" href="/admin/otchetBySell">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notification"
+                                   width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                   fill="none"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                                <circle cx="17" cy="7" r="3"></circle>
+                             </svg>
+                            </span>
+                                <span class="nav-link-title">
+                              Отчеты по продаже
                             </span>
                             </a>
                         </li>

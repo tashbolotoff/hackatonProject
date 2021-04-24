@@ -2,6 +2,7 @@ package kg.hackaton.project.services.serviceImpl;
 
 import kg.hackaton.project.entities.Client;
 import kg.hackaton.project.entities.User;
+import kg.hackaton.project.enums.UserStatus;
 import kg.hackaton.project.exceptions.RecordNotFoundException;
 import kg.hackaton.project.models.ClientModel;
 import kg.hackaton.project.repositories.AppartmentRepo;
@@ -59,6 +60,13 @@ public class ClientServiceImpl implements ClientService {
                         .username(clientModel.getUserModel().getUsername())
                         .password(passwordEncoder.encode(clientModel.getUserModel().getPassword()))
                         .userRole(userRoleRepo.getUserRoleByName("ROLE_CLIENT"))
+                        .name(clientModel.getName())
+                        .surname(clientModel.getSurname())
+                        .middleName(clientModel.getMiddlename())
+                        .email(clientModel.getEmail())
+                        .phone(clientModel.getPhone())
+                        .dateOfBirth(clientModel.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").parse(clientModel.getDateOfBirth()) : null)
+                        .userStatus(UserStatus.Активирован)
                         .build();
                 client.setUser(userRepo.save(user));
             }

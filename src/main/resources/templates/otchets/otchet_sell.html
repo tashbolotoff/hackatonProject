@@ -1,0 +1,184 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head th:replace="header :: head">
+  <meta charset="utf-8">
+</head>
+
+<body class="antialiased">
+<div class="wrapper">
+  <div th:replace="header :: header"></div>
+  <div class="page-wrapper">
+    <div class="container-fluid">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+              Отчеты по продаже
+            </div>
+            <h2 class="page-title" th:text="${title}">
+            </h2>
+          </div>
+          <!-- Page title actions -->
+<!--          <div class="col-auto ms-auto d-print-none">-->
+<!--            <div class="btn-list">-->
+<!--              <a href="/admin/appartment/add" class="btn btn-primary d-none d-sm-inline-block">-->
+<!--                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>-->
+<!--                Добавить квартиру/дом-->
+<!--              </a>-->
+<!--              <a href="/admin/manufacturer/add" class="btn btn-primary d-sm-none btn-icon" aria-label="Создать нового жилого комплекса">-->
+<!--                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
+        </div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container-fluid">
+        <div class="row row-cards">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body border-bottom py-3">
+                <div class="table-responsive">
+                  <table id="users_table" class="table table-bordered table-info card-table table-vcenter text-nowrap w-100 h-100">
+                    <thead>
+                    <tr>
+                      <th>Район</th>
+                      <th>Количество комнат</th>
+                      <th>Этаж</th>
+                      <th>Цена</th>
+                      <th>Адрес</th>
+                      <th>Жилой комплекс</th>
+                      <th>Серия</th>
+                      <th>Состояние</th>
+                      <th>Тип квартиры/дома</th>
+                      <th>Тип продажи</th>
+                      <th>Доход</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appartment : ${appartments}">
+                      <td th:text="${appartment.getRayon().getName()}"></td>
+                      <td th:text="${appartment.getCountOfRooms()}"></td>
+                      <td th:text="${appartment.getStage()}"></td>
+                      <td th:text="${appartment.getPrice()}"></td>
+                      <td th:text="${appartment.getAddress()}"></td>
+                      <td th:text="${appartment.getManufacturer().getName()}"></td>
+                      <td th:text="${appartment.getSerie().getName()}"></td>
+                      <td th:text="${appartment.getCondition()}"></td>
+                      <td th:text="${appartment.getTypeOfHouse()}"></td>
+                      <td th:text="${appartment.getTypeOfSale()}"></td>
+                      <td th:text="${appartment.getPrice()}"></td>
+
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                      <th colspan="10" style="text-align:right">Общий доход:</th>
+                      <th></th>
+                    </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer th:replace="header :: footer"></footer>
+  </div>
+</div>
+
+<!-- DataTables  & Plugins -->
+<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+<script th:src="@{/plugins/jszip/jszip.min.js}"></script>
+<script th:src="@{/plugins/pdfmake/pdfmake.min.js}"></script>
+<script th:src="@{/plugins/pdfmake/vfs_fonts.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+  $(function () {
+    $("#users_table").DataTable({
+      "footerCallback": function ( row, data, start, end, display ) {
+        var api = this.api(), data;
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function ( i ) {
+          return typeof i === 'string' ?
+                  i.replace(/[\$,]/g, '')*1 :
+                  typeof i === 'number' ?
+                          i : 0;
+        };
+
+        // Total over all pages
+        total = api
+                .column( 10 )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+
+        // Update footer
+        $( api.column( 10 ).footer() ).html(
+                total
+        );
+      },
+
+      "scrollX": true,
+      "language": {
+        "processing": "Подождите...",
+        "search": "Поиск:",
+        "lengthMenu": "Показать _MENU_ записей",
+        "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+        "infoEmpty": "Записи с 0 до 0 из 0 записей",
+        "infoFiltered": "(отфильтровано из _MAX_ записей)",
+        "infoPostFix": "",
+        "loadingRecords": "Загрузка записей...",
+        "zeroRecords": "Записи отсутствуют.",
+        "emptyTable": "В таблице отсутствуют данные",
+        "paginate":
+                {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+                },
+        "aria": {
+          "sortAscending": ": активировать для сортировки столбца по возрастанию",
+          "sortDescending": ": активировать для сортировки столбца по убыванию"
+        },
+        "select": {
+          "rows": {
+            "_": "Выбрано записей: %d",
+            "0": "Кликните по записи для выбора",
+            "1": "Выбрана одна запись"
+          }
+        },
+        "buttons":
+                {
+                  "print": "Печать",
+                  "colvis": "Видимость столбцов"
+                }
+      },
+      columnDefs : [
+        { 'visible': false, 'targets': [ ] }
+      ],
+      "buttons": ["csv", "excel", "print", "colvis"]
+    }).buttons().container().appendTo('#users_table_wrapper .col-md-6:eq(0)');
+  });
+</script>
+
+</body>
+</html>

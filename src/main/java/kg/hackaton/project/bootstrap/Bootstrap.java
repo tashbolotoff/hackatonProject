@@ -294,6 +294,34 @@ public class Bootstrap implements CommandLineRunner {
                 .build();
         permissionRepo.save(permissionMapRead);
 
+        //for Chart
+        PermissionCategory permissionCategoryChart = PermissionCategory.builder()
+                .name("Chart")
+                .nameRu("Чарты")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryChart);
+
+        Permission permissionChartsRead = Permission.builder()
+                .name("CHART_READ")
+                .nameRu("Просмотр чартов")
+                .permissionCategory(permissionCategoryChart)
+                .build();
+        permissionRepo.save(permissionChartsRead);
+
+        //for Otchet
+        PermissionCategory permissionCategoryOtchet = PermissionCategory.builder()
+                .name("Otchet")
+                .nameRu("Отчеты")
+                .build();
+        permissionCategoryRepo.save(permissionCategoryOtchet);
+
+        Permission permissionOtchetsRead = Permission.builder()
+                .name("OTCHET_READ")
+                .nameRu("Просмотр отчетов")
+                .permissionCategory(permissionCategoryOtchet)
+                .build();
+        permissionRepo.save(permissionOtchetsRead);
+
         // ROLES
         UserRole userRoleAdmin = UserRole.builder()
                 .name("ROLE_ADMIN")
@@ -360,8 +388,15 @@ public class Bootstrap implements CommandLineRunner {
                 .userRole(userRoleManager)
                 .build();
         userRepo.save(manager);
+
         User client = User.builder()
+                .name("Улук")
+                .surname("Капарбеков")
+                .middleName("Давлетович")
                 .username("client")
+                .phone("0555211308")
+                .email("uluk@gmail.com")
+                .dateOfBirth(new Date())
                 .password("client")
                 .userStatus(UserStatus.Активирован)
                 .userRole(userRoleClient)

@@ -13,6 +13,7 @@ import kg.hackaton.project.models.SerieModel;
 import kg.hackaton.project.entities.Permission;
 import kg.hackaton.project.entities.PermissionCategory;
 import kg.hackaton.project.models.*;
+import kg.hackaton.project.repositories.AppartmentRepo;
 import kg.hackaton.project.repositories.PermissionCategoryRepo;
 import kg.hackaton.project.services.*;
 import kg.hackaton.project.services.UserRoleService;
@@ -63,6 +64,9 @@ public class AdminController {
 
     @Autowired
     private SerieService serieService;
+
+    @Autowired
+    private AppartmentRepo appartmentRepo;
 
     private User currentUser;
 
@@ -364,6 +368,7 @@ public class AdminController {
         return "permissions/permissionEditList";
     }
 
+    @PreAuthorize("isAuthenticated() and hasPermission('CHART_READ', 'SUPER_ADMIN')")
     @GetMapping("/charts")
     public String getChart(Model model) {
         List<Appartment> appartments = appartmentService.findAll();
@@ -373,6 +378,22 @@ public class AdminController {
         model.addAttribute("list", appartments);
         setUserCredentials(model);
         return "charts/charts";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('OTCHET_READ', 'SUPER_ADMIN')")
+    @GetMapping("/otchetByRent")
+    public String getOtchetByRent(Model model) {
+        model.addAttribute("appartments", appartmentRepo.getAllByTypeOfSale(TypeOfSale.Аренда));
+        setUserCredentials(model);
+        return "otchets/otchet_rent";
+    }
+
+    @PreAuthorize("isAuthenticated() and hasPermission('OTCHET_READ', 'SUPER_ADMIN')")
+    @GetMapping("/otchetBySell")
+    public String getOtchetBySell(Model model) {
+        model.addAttribute("appartments", appartmentRepo.getAllByTypeOfSale(TypeOfSale.Продажа));
+        setUserCredentials(model);
+        return "otchets/otchet_sell";
     }
 
     public void setUserCredentials(Model model){

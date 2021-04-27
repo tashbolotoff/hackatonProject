@@ -12,6 +12,7 @@ echo 'Restart server...'
 
 ssh -i  ~/.ssh/id_rsa cadmin@46.235.74.211 -p 2221 << EOF
 
+pgrep java | xargs kill -9 $(lsof -t -i:8089)
 nohup java -jar /home/cadmin/garaj/project-0.0.1-SNAPSHOT.jar > log.txt &
 EOF
 

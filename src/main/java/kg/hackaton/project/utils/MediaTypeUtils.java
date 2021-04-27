@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public class MediaTypeUtils {
 
-    private static final String uploadPath = "/home/gumadmin/files";
-
+    private static final String uploadPath = "C:/Users/btash/Desktop/hackaton/src/main/resources/uploads";
+//        private static final String uploadPath = "/home/cadmin/garaj/uploads";
     public static MediaType getMediaTypeForFileName(ServletContext servletContext, String fileName) {
         String mineType = servletContext.getMimeType(fileName);
         try {

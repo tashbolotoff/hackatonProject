@@ -640,8 +640,8 @@ public class Bootstrap implements CommandLineRunner {
                 .typeOfHouse(TypeOfHouse.Квартира)
                 .typeOfSale(TypeOfSale.Продажа)
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
-                .latitude(42.8702373)
-                .longitude(74.5904728)
+                .latitude(42.8298142)
+                .longitude(74.6120214)
                 .imgPaths(imgPaths2)
                 .build();
         appartmentRepo.save(appartment1);
@@ -658,8 +658,8 @@ public class Bootstrap implements CommandLineRunner {
                 .typeOfHouse(TypeOfHouse.Дом)
                 .typeOfSale(TypeOfSale.Лизинг)
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
-                .latitude(42.8661323)
-                .longitude(74.569608)
+                .latitude(42.8505576)
+                .longitude(74.5798596)
                 .imgPaths(imgPaths3)
                 .build();
         appartmentRepo.save(appartment2);
@@ -676,8 +676,8 @@ public class Bootstrap implements CommandLineRunner {
                 .typeOfHouse(TypeOfHouse.Дом)
                 .typeOfSale(TypeOfSale.Лизинг)
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
-                .latitude(42.8661323)
-                .longitude(74.569608)
+                .latitude(42.903959)
+                .longitude(74.844725)
                 .imgPaths(imgPaths4)
                 .build();
         appartmentRepo.save(appartment3);
@@ -694,8 +694,8 @@ public class Bootstrap implements CommandLineRunner {
                 .typeOfHouse(TypeOfHouse.Дом)
                 .typeOfSale(TypeOfSale.Аренда)
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
-                .latitude(42.8661323)
-                .longitude(74.569608)
+                .latitude(42.875228)
+                .longitude(74.56206)
                 .imgPaths(imgPaths5)
                 .build();
         appartmentRepo.save(appartment4);
@@ -712,8 +712,8 @@ public class Bootstrap implements CommandLineRunner {
                 .typeOfHouse(TypeOfHouse.Дом)
                 .typeOfSale(TypeOfSale.Лизинг)
                 .busyOrFreeStatus(BusyOrFreeStatus.Свободно)
-                .latitude(42.8661323)
-                .longitude(74.569608)
+                .latitude(42.862427)
+                .longitude(74.5425)
                 .imgPaths(imgPaths6)
                 .build();
         appartmentRepo.save(appartment5);
@@ -730,8 +730,8 @@ public class Bootstrap implements CommandLineRunner {
                 .typeOfHouse(TypeOfHouse.Дом)
                 .typeOfSale(TypeOfSale.Лизинг)
                 .busyOrFreeStatus(BusyOrFreeStatus.Занято)
-                .latitude(42.8661323)
-                .longitude(74.569608)
+                .latitude(42.871466)
+                .longitude(74.572623)
                 .imgPaths(imgPaths7)
                 .build();
         appartmentRepo.save(appartment6);
